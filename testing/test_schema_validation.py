@@ -10,7 +10,7 @@ class TestSchemaValidation(TestCase):
 
 class TestFullSchemaValidation(TestSchemaValidation):
     def test_basic_schema(self):
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         test_item = load_single(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
@@ -24,7 +24,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
         validator.validate(test_item)
 
     def test_basic_schema_wrong_data(self):
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         test_item = load_single(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic_wrong.json"
@@ -48,7 +48,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
         chdir(dirname(realpath(__file__)))
 
         try:
-            from aws_serverless_wrapper.schema_validation import SchemaValidator
+            from aws_schema import SchemaValidator
 
             test_item = load_single(
                 f"{dirname(realpath(__file__))}/test_data/database/item_nested.json"
@@ -68,7 +68,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
             raise exc
 
     def test_basic_schema_without_required(self):
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         test_item = load_single(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
@@ -84,7 +84,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
         validator.validate(test_item, no_required_check=True)
 
     def test_basic_schema_without_required_nested(self):
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         test_item = load_single(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
@@ -108,7 +108,7 @@ class TestGetSubSchema(TestSchemaValidation):
         )
         cls.raw_schema = load_single(cls.raw_schema_file)
 
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         cls.validator = SchemaValidator(file=cls.raw_schema_file)
 
@@ -163,7 +163,7 @@ class TestCheckSubItemType(TestSchemaValidation):
         )
         cls.raw_schema = load_single(cls.raw_schema_file)
 
-        from aws_serverless_wrapper.schema_validation import SchemaValidator
+        from aws_schema import SchemaValidator
 
         cls.validator = SchemaValidator(file=cls.raw_schema_file)
 

@@ -12,7 +12,7 @@ def response_validation_env():
 
 
 def test_passing_string_response(response_validation_env, caplog):
-    from aws_serverless_wrapper.schema_validation.response_validation import (
+    from aws_schema.response_validation import (
         ResponseDataValidator,
     )
 
@@ -34,7 +34,7 @@ def test_passing_string_response(response_validation_env, caplog):
 
 
 def test_passing_object_response(response_validation_env, caplog):
-    from aws_serverless_wrapper.schema_validation.response_validation import (
+    from aws_schema.response_validation import (
         ResponseDataValidator,
     )
 
@@ -56,7 +56,7 @@ def test_passing_object_response(response_validation_env, caplog):
 
 
 def test_wrong_string_response(response_validation_env, caplog):
-    from aws_serverless_wrapper.schema_validation.response_validation import (
+    from aws_schema.response_validation import (
         ResponseDataValidator,
     )
 
@@ -80,7 +80,7 @@ def test_wrong_string_response(response_validation_env, caplog):
 
 
 def test_unspecified_status_code_response(response_validation_env, caplog):
-    from aws_serverless_wrapper.schema_validation.response_validation import (
+    from aws_schema.response_validation import (
         ResponseDataValidator,
     )
 

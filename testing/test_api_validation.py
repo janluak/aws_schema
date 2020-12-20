@@ -6,7 +6,7 @@ from os import getcwd, chdir
 
 class TestAPIValidation(TestCase):
     def test_basic_with_schema_file(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -21,7 +21,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_schema_file_including_http_method(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -34,7 +34,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_schema_directory(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -53,7 +53,7 @@ class TestAPIValidation(TestCase):
         api_basic()
 
     def test_basic_with_relative_schema_file(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -73,7 +73,7 @@ class TestAPIValidation(TestCase):
             chdir(actual_cwd)
 
     def test_basic_with_relative_schema_directory(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -95,7 +95,7 @@ class TestAPIValidation(TestCase):
             chdir(actual_cwd)
 
     def test_basic_with_wrong_httpMethod(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -124,7 +124,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_missing_body(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -153,7 +153,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_wrong_body(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -192,7 +192,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_body_directly_as_dict(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -212,7 +212,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_basic_with_missing_path_parameter(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -241,7 +241,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_complete_aws_rest_event_data(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 
@@ -256,7 +256,7 @@ class TestAPIValidation(TestCase):
         )
 
     def test_non_rest_event(self):
-        from aws_serverless_wrapper.schema_validation.api_validation import (
+        from aws_schema.api_validation import (
             APIDataValidator,
         )
 

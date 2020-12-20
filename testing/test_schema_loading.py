@@ -5,7 +5,7 @@ from fil_io.json import load_single
 
 class TestSchemaLoadingFromFile(TestCase):
     def test_load_basic_schema(self):
-        from aws_serverless_wrapper.schema_validation.schema_validator import (
+        from aws_schema.schema_validator import (
             SchemaValidator,
         )
 
@@ -20,7 +20,7 @@ class TestSchemaLoadingFromFile(TestCase):
         self.assertEqual(expected_schema, loaded_schema)
 
     def test_load_nested_schema(self):
-        from aws_serverless_wrapper.schema_validation.schema_validator import (
+        from aws_schema.schema_validator import (
             SchemaValidator,
         )
 
