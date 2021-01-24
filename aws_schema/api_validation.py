@@ -73,6 +73,13 @@ class APIDataValidator(DataValidator):
 
     @staticmethod
     def handle_exception(validation_error):
+        if validation_error.context:
+            body = validation_error.context[0].__str__()
+        elif len(validation_error.__str__().split("\n")) > 12:
+            body = validation_error.message
+        else:
+            body = validation_error.__str__()
+
         raise TypeError(
             {
                 "statusCode": 400
@@ -81,9 +88,7 @@ class APIDataValidator(DataValidator):
                     or "httpMethod" != validation_error.path[0]
                 )
                 else 405,
-                "body": validation_error.message
-                if len(validation_error.__str__().split("\n")) > 12
-                else validation_error.__str__(),
+                "body": body,
                 "headers": {"Content-Type": "text/plain"},
             }
         )
