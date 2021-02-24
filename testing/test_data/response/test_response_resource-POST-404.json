@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "/test_request_resource/{path_level1}/{path_level2}-POST-404",
+  "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+      "statusCode": {
+          "type": "number"
+      },
+      "body": {
+          "type": "string",
+          "examples": [
+              "not found"
+          ]
+      },
+      "headers": {
+          "type": "object",
+          "properties": {
+              "Content-Type": {
+                  "type": "string",
+                  "enum": [
+                      "text/plain"
+                  ]
+              }
+          }
+      }
+  },
+  "required": [
+    "statusCode",
+    "headers",
+    "body"
+  ]
+}
