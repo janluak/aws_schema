@@ -5,6 +5,7 @@ from jsonschema.exceptions import ValidationError
 from os.path import dirname, abspath
 from aws_environ_helper import delete_keys_in_nested_dict, find_path_values_in_dict
 from copy import deepcopy
+from pathlib import Path
 
 _current_validator = Draft7Validator
 
@@ -29,16 +30,20 @@ class SchemaValidator:
         self.__validator_without_required_check = None
 
         if file:
-            if ".json" != file[-5:]:
-                file += ".json"
-            with open(file, "r") as f:
-                self.__raw_schema = json_load(f)
+            self.__open_file(file)
 
         elif url:
             raise NotImplementedError
 
         else:
             self.__raw_schema = raw
+
+    def __open_file(self, origin):
+        origin = Path(origin)
+        if origin.suffix != ".json":
+            origin = origin.with_suffix(".json")
+        with open(origin, "r") as f:
+            self.__raw_schema = json_load(f)
 
     @property
     def schema(self):
@@ -137,7 +142,7 @@ class SchemaValidator:
 
         if no_required_key:
             schema = deepcopy(self.__raw_schema)
-            delete_keys_in_nested_dict(schema, "required")
+            delete_keys_in_nested_dict(schema, ["required"])
             self.__validator_without_required_check = _current_validator(
                 schema, resolver=self.__resolver
             )

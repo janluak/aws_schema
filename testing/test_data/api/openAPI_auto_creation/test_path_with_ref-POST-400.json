@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "/test_path_with_ref-POST-400",
+    "description": "error",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "statusCode": {
+            "type": "number"
+        },
+        "headers": {
+            "type": "object",
+            "properties": {
+                "header_key": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required": [
+        "statusCode",
+        "headers"
+    ]
+}

@@ -59,8 +59,8 @@ class DataValidator(ABC):
         return str()
 
     def __insert_api_name_to_origin(self, origin):
-        resource_name = "*".join(
-            [i for i in self.api_name.split("/") if "{" not in i and i]
+        resource_name = "||".join(
+            [i for i in self.api_name.split("/") if i]
         )
 
         origin += resource_name

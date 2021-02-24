@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "NestedResourceAPI",
-    "description": "API with url: /test_request_resource/specific_resource/{some_id}",
+    "description": "API with url: /test_request_resource/specific_resource",
     "type": "object",
     "additionalProperties": true,
     "properties": {
@@ -12,23 +12,19 @@
                 "POST"
             ]
         },
-        "pathParameters": {
-            "description": "path parameter in url (required variables {url.com/{path_level1}/{path_level2}} -> predefined in request, string only)",
+        "body": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "some_id": {
-                    "description": "key name as specified in endpoint config, first level",
+                "key_1": {
                     "type": "string"
                 }
             },
-            "required": [
-                "some_id"
-            ]
+            "required": ["key_1"]
         }
     },
     "required": [
-        "httpMethod",
-        "pathParameters"
+        "body",
+        "httpMethod"
     ]
 }

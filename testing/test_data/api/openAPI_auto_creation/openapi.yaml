@@ -1,0 +1,231 @@
+openapi: 3.0.1
+info:
+  description: "This is an example openAPI specification for testing purposes"
+  version: 1.0.0
+  title: "Test API"
+  contact:
+    email: "aws_schema@braje.org"
+
+servers:
+- url: "https://api.server.com/"
+  description: "final productive environment"
+- url: "https://api-dev.server.com/"
+  description: "environment for your development"
+
+tags: 
+- name: main
+
+paths:
+  /test_path:
+    get:
+      tags:
+        - main
+      parameters:
+        - in: query
+          name: string_value
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    enum:
+                      - "Successful"
+        404:
+          description: not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: not found
+
+  /test_path/nested:
+    get:
+      tags:
+        - main
+      parameters:
+        - in: query
+          name: string_value
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    enum:
+                      - "Successful"
+        404:
+          description: not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: not found
+
+  /test_path_with_ref:
+    post:
+      tags:
+        - main
+      summary: "Basic API"
+      description: "some description"
+      operationId: "operationID ref"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body_key1:
+                  type: string
+                  description: containing only a string
+                body_key2:
+                  $ref: '#/components/schemas/example_object'
+              required: [body_key2]
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ref_key:
+                    $ref: '#/components/schemas/example_object'
+        400:
+          description: error
+          headers:
+            header_key:
+              schema:
+                type: string
+
+        404:
+          description: not found
+
+
+
+  /test_request_resource/{path_level1}/{path_level2}:
+    put:
+      tags: 
+        - main
+      summary: "Basic API"
+      description: "some description"
+      operationId: "operationID"
+      parameters:
+        - in: path
+          name: path_level1
+          schema:
+            type: string
+            enum:
+              - path_value1
+              - path_value2
+          required: true
+          description: "key name as specified in endpoint config, first level"
+          
+        - in: path
+          name: path_level2
+          required: true
+          description: "key name as specified in endpoint config, second level"
+          schema:
+            type: string
+        
+        - in: query
+          name: key1
+          description: key1 argument
+          schema:
+            type: string
+        - in: query
+          name: key2
+          description: key2 argument
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: isBase64Encoded
+          description: e.g. allow only not encoded requests
+          schema:
+            type: boolean
+            enum:
+              - false
+        - in: header
+          name: requestContext
+          schema:
+            type: object
+      
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                
+                body_key1:
+                    type: string
+                    description: containing only a string
+
+                body_key2:
+                    type: object
+                    description: containing a not further specified dictionary
+              required:
+                - body_key1
+
+      responses:
+        201:
+          description: "Response for statusCode '201' for method 'PUT' on API 'response_test'"
+          content:
+            text/plain:
+              schema:
+                description: string description
+                type: string
+                enum:
+                  - single_allowed_answer
+
+            application/json:
+              schema:
+                type: object
+                properties:
+                  a:
+                    type: array
+                    items:
+                      type: string
+
+                additionalProperties: false
+
+        404:
+          description: "Response for statusCode '404' for method 'PUT' on API 'response_test'"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "not found"
+
+      security:
+          - sigv4 : [ ]
+
+components:
+  schemas:
+    example_object:
+      type: object
+      properties:
+        example_key1:
+          type: string
+          description: explaining example_key1
+        example_key2:
+          type: integer
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

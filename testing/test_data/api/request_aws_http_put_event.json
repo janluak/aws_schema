@@ -1,7 +1,7 @@
 {
   "resource": "/test_request_resource/{path_level1}/{path_level2}",
   "path": "/base_url_path/test_request_resource/path_value1/path_second_level1",
-  "httpMethod": "POST",
+  "httpMethod": "GET",
   "headers": {
     "Accept": "*/*",
     "Accept-Encoding": "gzip, deflate",

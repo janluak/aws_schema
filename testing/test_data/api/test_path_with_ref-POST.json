@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "/test_path_with_ref-POST",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "httpMethod": {
+            "const": "POST",
+            "description": "the ReST method(s) type allowed for this API",
+            "type": "string"
+        },
+        "headers": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "Content-Type": {
+                    "type": "string",
+                    "enum": [
+                        "application/json"
+                    ]
+                }
+            },
+            "required": [
+                "Content-Type"
+            ]
+        },
+        "body": {
+            "type": "object",
+            "properties": {
+                "body_key1": {
+                    "type": "string",
+                    "description": "containing only a string"
+                },
+                "body_key2": {
+                    "type": "object",
+                    "properties": {
+                        "example_key1": {
+                            "type": "string",
+                            "description": "explaining example_key1"
+                        },
+                        "example_key2": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "body_key2"
+            ],
+            "additionalProperties": false
+        },
+        "pathParameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+            },
+            "required": [
+            ]
+        },
+        "queryParameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+            },
+            "required": [
+            ]
+        }
+    },
+    "required": [
+        "body",
+        "headers",
+        "httpMethod"
+    ],
+    "description": "Basic API\n---\nsome description"
+}
