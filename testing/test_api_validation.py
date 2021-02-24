@@ -269,3 +269,43 @@ class TestAPIValidation(TestCase):
             APIDataValidator(
                 file=api_schema_file, api_data=api_data, api_name="api_basic"
             )
+
+    def test_url_nested_path(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
+        api_data = {
+            "httpMethod": "POST",
+            "body": '{"key_1": "some_string"}'
+        }
+
+        APIDataValidator(
+            file=api_schema_directory, api_data=api_data, api_name="/test_request_resource/specific_resource"
+        )
+
+    def test_url_nested_path_variables(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
+        api_data = {
+            "httpMethod": "PUT",
+            "body": '{"key1": "some_string"}',
+            "headers": {"Content-Type": "application/json"},
+            "pathParameters": {
+                "path_level1": "path_value1",
+                "path_level2": "path_value"
+            },
+            "multiValueQueryStringParameters": {
+                "key1": ["some string"],
+                "key2": ["another string"]
+            }
+        }
+
+        APIDataValidator(
+            file=api_schema_directory, api_data=api_data, api_name="/test_request_resource/{path_level1}/{path_level2}"
+        )
+
