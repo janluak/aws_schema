@@ -22,13 +22,13 @@
         "requestContext": {
           "type": "object"
         },
-        "Content-Type": {
+        "content-type": {
           "type": "string",
           "enum": ["application/json"]
         }
       },
       "required": [
-        "Content-Type"
+        "content-type"
       ]
     },
     "body": {

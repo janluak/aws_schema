@@ -33,7 +33,7 @@ def test_response_translation_text_plain():
             "headers": {
                 "type": "object",
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [
                             "text/plain"
@@ -116,7 +116,7 @@ def test_response_translation_application_json():
                                                    'properties': {'sub_key': {'type': 'string'}},
                                                    'type': 'object'}},
                                 'type': 'object'},
-                       'headers': {'properties': {'Content-Type': {'enum': ['application/json'],
+                       'headers': {'properties': {'content-type': {'enum': ['application/json'],
                                                                    'type': 'string'}},
                                    'type': 'object'},
                        'statusCode': {'type': 'number'}},
@@ -163,7 +163,7 @@ def test_response_translation_multiple_content_types():
         'oneOf': [{'additionalProperties': False,
                    'properties': {'body': {'examples': ['not found'],
                                            'type': 'string'},
-                                  'headers': {'properties': {'Content-Type': {'enum': ['text/plain',
+                                  'headers': {'properties': {'content-type': {'enum': ['text/plain',
                                                                                        'application/json'],
                                                                               'type': 'string'}},
                                               'type': 'object'},
@@ -173,7 +173,7 @@ def test_response_translation_multiple_content_types():
                   {'additionalProperties': False,
                    'properties': {'body': {'properties': {'key1': {'type': 'string'}},
                                            'type': 'object'},
-                                  'headers': {'properties': {'Content-Type': {'enum': ['text/plain',
+                                  'headers': {'properties': {'content-type': {'enum': ['text/plain',
                                                                                        'application/json'],
                                                                               'type': 'string'}},
                                               'type': 'object'},
@@ -237,7 +237,7 @@ def test_response_translation_additional_headers():
             "headers": {
                 "type": "object",
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [
                             "text/plain"
@@ -325,7 +325,7 @@ def test_response_translation_array():
             "headers": {
                 "type": "object",
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [
                             "application/json"
@@ -415,7 +415,7 @@ def test_response_translation_with_reference():
             "headers": {
                 "type": "object",
                 "properties": {
-                    'Content-Type': {
+                    'content-type': {
                         'enum': ['application/json'],
                         'type': 'string'
                     }
@@ -509,7 +509,7 @@ def test_response_translation_with_reference_in_items():
             "headers": {
                 "type": "object",
                 "properties": {
-                    'Content-Type': {
+                    'content-type': {
                         'enum': ['application/json'],
                         'type': 'string'
                     }
@@ -635,7 +635,7 @@ def test_response_translation_text_plain_without_schema():
             "headers": {
                 "type": "object",
                 "properties": {
-                    'Content-Type': {
+                    'content-type': {
                         'enum': ['text/plain'],
                         'type': 'string'
                     }

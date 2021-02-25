@@ -13,7 +13,7 @@
                 "headers": {
                     "type": "object",
                     "properties": {
-                        "Content-Type": {
+                        "content-type": {
                             "type": "string",
                             "enum": [
                                 "text/plain",
@@ -46,7 +46,7 @@
                 "headers": {
                     "type": "object",
                     "properties": {
-                        "Content-Type": {
+                        "content-type": {
                             "type": "string",
                             "enum": [
                                 "text/plain",

@@ -75,7 +75,7 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         spec["properties"]["headers"].update(
             {
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [i for i in api_schema["content"].keys() if i != "example"]
                     }
@@ -176,7 +176,7 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
     }
 
     if method != "get":
-        schema["properties"]["headers"]["properties"].update({"Content-Type": {
+        schema["properties"]["headers"]["properties"].update({"content-type": {
             "type": "string",
             "enum": list()
         }})
@@ -213,12 +213,12 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
                 schema["properties"][parameter_type]["required"].append(parameter_name)
 
     if "requestBody" in api_schema:
-        schema["properties"]["headers"]["required"].append("Content-Type")
+        schema["properties"]["headers"]["required"].append("content-type")
         bodies = list()
         if "required" in api_schema["requestBody"] and api_schema["requestBody"]["required"]:
             required_parameter_types.add("body")
         for content_type in api_schema["requestBody"]["content"]:
-            schema["properties"]["headers"]["properties"]["Content-Type"]["enum"].append(content_type)
+            schema["properties"]["headers"]["properties"]["content-type"]["enum"].append(content_type)
 
             body = _schema_to_property(api_schema["requestBody"]["content"][content_type]["schema"], full_schema)
             body.update({"additionalProperties": False})
@@ -268,39 +268,6 @@ class _OpenAPIResponses:
             api_schema=self.origin_schema[statusCode],
             full_schema=self.method.path.origin.origin_schema
         )
-
-        # schema = {
-        #     "$schema": __file__.__JSON_SCHEMA_DRAFT,
-        #     "title": self.method.path_name.path_name,
-        #     "description": self.origin_schema[statusCode]["description"],
-        #     "type": "object",
-        #     "properties": {
-        #         "statusCode": {
-        #             "type": "number"
-        #         },
-        #         "headers": {
-        #             "type": "object",
-        #             "properties": {
-        #                 "Content-Type": {
-        #                     "type": "string",
-        #                     "enum": list(self.origin_schema[statusCode]["content"].keys()),
-        #                 }
-        #             }
-        #         },
-        #         "body": {
-        #
-        #         }
-        #     }
-        # }
-        #
-        # schema["properties"]["headers"]["properties"].update(
-        #     _convert_headers(self.origin_schema[statusCode]["headers"])
-        # )
-
-        # if len(self.origin_schema[statusCode]["content"]) == 1:
-        #     schema["properties"]["body"] =
-        #
-        # else:
 
 
 class _OpenAPIMethod:

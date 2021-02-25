@@ -167,7 +167,7 @@ def test_request_translation_post():
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [
                             "application/json"
@@ -177,7 +177,7 @@ def test_request_translation_post():
                         "type": "boolean"
                     }
                 },
-                "required": ["Content-Type"]
+                "required": ["content-type"]
             },
             "body": {
                 "type": "object",
@@ -330,7 +330,7 @@ def test_request_translation_post_no_requires():
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": [
                             "application/json"
@@ -340,7 +340,7 @@ def test_request_translation_post_no_requires():
                         "type": "boolean"
                     }
                 },
-                "required": ["Content-Type"]
+                "required": ["content-type"]
             },
             "body": {
                 "type": "object",
@@ -452,7 +452,7 @@ def test_request_translation_no_body_no_query():
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "Content-Type": {
+                    "content-type": {
                         "type": "string",
                         "enum": list()
                     },
@@ -577,10 +577,10 @@ def test_request_translation_with_reference():
             'headers': {
                 'additionalProperties': True,
                 'properties': {
-                    'Content-Type': {
+                    'content-type': {
                         'enum': ['application/json'],
                         'type': 'string'}},
-                'required': ['Content-Type'],
+                'required': ['content-type'],
                 'type': 'object'},
             'httpMethod': {'const': 'PUT',
                            'description': 'the ReST method(s) type allowed '

@@ -28,7 +28,7 @@
     "headers": {
       "type": "object",
       "properties": {
-        "Content-Type": {
+        "content-type": {
           "type": "string",
           "enum": [
             "application/json"
