@@ -419,3 +419,53 @@ def test_response_translation_no_body_with_header():
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
                              open_api_response, dict()) == json_schema_response
+
+
+def test_response_translation_text_plain_without_schema():
+    open_api_path = "/test_path_with_ref"
+    open_api_method = "post"
+    open_api_statusCode = 400
+    open_api_response = {
+        "description": "error",
+        "content": {
+            "text/plain": {
+            },
+            "example": "not found"
+        }
+    }
+
+    json_schema_response = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "/test_path_with_ref-POST-400",
+        "description": "error",
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "statusCode": {
+                "type": "number"
+            },
+            "body": {
+                "type": "string",
+                "example": "not found"
+            },
+            "headers": {
+                "type": "object",
+                "properties": {
+                    'Content-Type': {
+                        'enum': ['text/plain'],
+                        'type': 'string'
+                    }
+                }
+            }
+        },
+        "required": [
+            "statusCode",
+            "headers",
+            "body"
+        ]
+    }
+
+    from aws_schema.openAPI_converter import _convert_response
+    assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
+                             open_api_response, dict()) == json_schema_response
+

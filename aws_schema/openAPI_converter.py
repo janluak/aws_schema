@@ -68,7 +68,7 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
                 "properties": {
                     "Content-Type": {
                         "type": "string",
-                        "enum": list(api_schema["content"].keys())
+                        "enum": [i for i in api_schema["content"].keys() if i != "example"]
                     }
                 }
             }
@@ -92,9 +92,19 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
     specs = list()
 
     for content_type in api_schema["content"]:
+        if content_type == "example":
+            continue
         spec_var = spec.copy()
 
-        spec_var["properties"]["body"] = _schema_to_property(api_schema["content"][content_type]["schema"], full_schema)
+        try:
+            spec_var["properties"]["body"] = _schema_to_property(api_schema["content"][content_type]["schema"], full_schema)
+        except KeyError as e:
+            if content_type == "text/plain":
+                spec_var["properties"]["body"]["type"] = "string"
+                if "example" in api_schema["content"]:
+                    spec_var["properties"]["body"]["example"] = api_schema["content"]["example"]
+            else:
+                raise e
         if "headers" in api_schema:
             for header in api_schema["headers"]:
                 spec_var["properties"]["headers"]["properties"][header] = _schema_to_property(
