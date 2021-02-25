@@ -266,6 +266,86 @@ def test_response_translation_additional_headers():
                              open_api_response, dict()) == json_schema_response
 
 
+def test_response_translation_array():
+    open_api_path = "test_request_resource"
+    open_api_method = "post"
+    open_api_statusCode = 404
+    open_api_response = {
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "example_key": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "key1": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["key1"]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    json_schema_response = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "test_request_resource-POST-404",
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "statusCode": {
+                "type": "number"
+            },
+            "body": {
+                "type": "object",
+                "properties": {
+                        "example_key": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "key1": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["key1"]
+                            }
+                        }
+                    }
+            },
+            "headers": {
+                "type": "object",
+                "properties": {
+                    "Content-Type": {
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                }
+            }
+        },
+        "required": [
+            "statusCode",
+            "headers",
+            "body"
+        ]
+    }
+
+    from aws_schema.openAPI_converter import _convert_response
+    assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
+                             open_api_response, dict()) == json_schema_response
+
+
 def test_response_translation_with_reference():
     open_api_path = "test_path_with_ref"
     open_api_method = "post"

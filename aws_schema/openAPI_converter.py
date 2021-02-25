@@ -28,13 +28,19 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
         json_schema.update({"examples": [api_schema["example"]]})
         del api_schema["example"]
 
-    if query_param:
-        api_schema = {"items": api_schema, "type": "array"}
+    if "type" in api_schema:
+        if query_param:
+            api_schema = {"items": api_schema, "type": "array"}
 
-    if api_schema["type"] == "object":
-        if "properties" in api_schema:
-            for prop in api_schema["properties"]:
-                api_schema["properties"][prop] = _schema_to_property(api_schema["properties"][prop], full_schema)
+        if api_schema["type"] == "object":
+            if "properties" in api_schema:
+                for prop in api_schema["properties"]:
+                    api_schema["properties"][prop] = _schema_to_property(api_schema["properties"][prop], full_schema)
+    elif "items" in api_schema:
+        if "properties" in api_schema["items"]:
+            for prop in api_schema["items"]["properties"]:
+                api_schema["items"]["properties"][prop] = _schema_to_property(api_schema["items"]["properties"][prop], full_schema)
+
 
     json_schema.update(api_schema)
 
