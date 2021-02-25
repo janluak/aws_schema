@@ -21,6 +21,9 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
     if "$ref" in api_schema:
         api_schema = get_nested_from_dict(api_schema["$ref"][2:].split("/"), full_schema)
 
+    elif "items" in api_schema and "$ref" in api_schema["items"]:
+        api_schema["items"] = get_nested_from_dict(api_schema["items"]["$ref"][2:].split("/"), full_schema)
+
     if "example" in api_schema:
         json_schema.update({"examples": [api_schema["example"]]})
         del api_schema["example"]

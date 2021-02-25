@@ -278,16 +278,26 @@ def test_response_translation_with_reference():
                     "type": "object",
                     'properties': {
                         "ref_key": {
-                            "type": "object",
-                            "properties": {
-                                'example_key1': {
-                                    'description': 'explaining example_key1',
-                                    'type': 'string'
-                                },
-                                'example_key2': {
-                                    'type': 'integer'
-                                }
-                            }
+                            "$ref": "#/components/schemas/example_ref"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    components = {
+        "components": {
+            "schemas": {
+                "example_ref": {
+                    "type": "object",
+                    "properties": {
+                        'example_key1': {
+                            'description': 'explaining example_key1',
+                            'type': 'string'
+                        },
+                        'example_key2': {
+                            'type': 'integer'
                         }
                     }
                 }
@@ -341,7 +351,101 @@ def test_response_translation_with_reference():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, components) == json_schema_response
+
+
+def test_response_translation_with_reference_in_items():
+    open_api_path = "test_path_with_ref"
+    open_api_method = "post"
+    open_api_statusCode = 200
+    open_api_response = {
+        "description": "success",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "example_key": {
+                            "type": "array",
+                            'items': {
+                                "$ref": "#/components/schemas/example_ref"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    components = {
+        "components": {
+            "schemas": {
+                "example_ref": {
+                    "type": "object",
+                    "properties": {
+                        'example_key1': {
+                            'description': 'explaining example_key1',
+                            'type': 'string'
+                        },
+                        'example_key2': {
+                            'type': 'integer'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    json_schema_response = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "test_path_with_ref-POST-200",
+        "description": "success",
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "statusCode": {
+                "type": "number"
+            },
+            "body": {
+                "type": "object",
+                "properties": {
+                    "example_key": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "example_key1": {
+                                    "description": "explaining example_key1",
+                                    "type": "string"
+                                },
+                                "example_key2": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "headers": {
+                "type": "object",
+                "properties": {
+                    'Content-Type': {
+                        'enum': ['application/json'],
+                        'type': 'string'
+                    }
+                }
+            }
+        },
+        "required": [
+            "statusCode",
+            "headers",
+            "body",
+        ]
+    }
+
+    from aws_schema.openAPI_converter import _convert_response
+    assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
+                             open_api_response, components) == json_schema_response
 
 
 def test_response_translation_no_body():
