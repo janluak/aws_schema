@@ -309,3 +309,53 @@ class TestAPIValidation(TestCase):
             file=api_schema_directory, api_data=api_data, api_name="/test_request_resource/{path_level1}/{path_level2}"
         )
 
+    def test_basic_with_parameter_casting(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_file = (
+            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
+        )
+        api_data = load_single(
+            f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
+        )
+        APIDataValidator(
+            file=api_schema_file, api_data=api_data, api_name="test_request_resource"
+        )
+
+    def test_basic_with_parameter_casting_wrong_input(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_file = (
+            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
+        )
+        api_data = load_single(
+            f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
+        )
+
+        api_data["pathParameters"]["path_level1"] = "1,25"
+
+        with self.assertRaises(TypeError) as TE:
+            APIDataValidator(
+                file=api_schema_file,
+                api_data=api_data,
+                api_name="test_request_resource",
+            )
+
+        self.assertEqual(
+            {
+                "statusCode": 400,
+                "body": "'1,25' is not of type 'number'\n\nFailed validating 'type' in "
+                        "schema['properties']['pathParameters']['properties']['path_level1']:\n"
+                        "    {'description': 'key name as specified in endpoint config, first level',\n"
+                        "     'type': 'number'}\n\n"
+                        "On instance['pathParameters']['path_level1']:\n"
+                        "    '1,25'",
+                "headers": {"Content-Type": "text/plain"},
+            },
+            TE.exception.args[0],
+        )
+

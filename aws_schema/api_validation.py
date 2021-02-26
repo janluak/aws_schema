@@ -1,5 +1,6 @@
 from json import loads, JSONDecodeError
 from ._validation_base_class import DataValidator
+from .json_to_python_type import json_to_python_type_convert
 
 
 __all__ = ["APIDataValidator"]
@@ -17,11 +18,11 @@ class APIDataValidator(DataValidator):
         self.__api_name = api_name
         super().__init__(api_data, file, url, raw)
 
+        self.__decode_json_body()
         if self.httpMethod != "nonHTTP":
             self.__convert_none_to_empty_dict()
             self.__rename_multi_value_query_to_query_param()
-
-        self.__decode_json_body()
+            self.__cast_path_n_query_parameters()
 
         self.verify()
 
@@ -70,6 +71,26 @@ class APIDataValidator(DataValidator):
                         "headers": {"Content-Type": "text/plain"},
                     }
                 )
+
+    def __cast_path_n_query_parameters(self):
+        if "pathParameters" in self.data:
+            for param_name in self.data["pathParameters"]:
+                try:
+                    self.data["pathParameters"][param_name] = json_to_python_type_convert[
+                        self.schema["properties"]["pathParameters"]["properties"][param_name]["type"]](
+                        self.data["pathParameters"][param_name]
+                    )
+                except (ValueError, SyntaxError):
+                    pass
+        for param_name in self.data["queryParameters"]:
+            for param_no in range(len(self.data["queryParameters"][param_name])):
+                try:
+                    self.data["queryParameters"][param_name][param_no] = json_to_python_type_convert[
+                        self.schema["properties"]["queryParameters"]["properties"][param_name]["items"]["type"]](
+                        self.data["queryParameters"][param_name][param_no]
+                    )
+                except (ValueError, SyntaxError):
+                    pass
 
     @staticmethod
     def handle_exception(validation_error):
