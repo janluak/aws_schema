@@ -134,7 +134,7 @@ class TestAPIValidation(TestCase):
         api_data = load_single(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
-        api_data.pop("body")
+        api_data["body"] = None
 
         with self.assertRaises(TypeError) as TE:
             APIDataValidator(

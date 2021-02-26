@@ -60,6 +60,9 @@ class APIDataValidator(DataValidator):
         )
 
     def __decode_json_body(self):
+        if "body" in self.data and self.data["body"] is None:
+            del self.data["body"]
+
         if "body" in self.data and not isinstance(self.data["body"], dict):
             try:
                 self.data["body"] = loads(self.data["body"])
