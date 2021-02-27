@@ -54,6 +54,9 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         "description": api_schema["description"] if "description" in api_schema else ""
     }
 
+    if "version" in full_schema["info"]:
+        schema.update({"version": full_schema["info"]["version"]})
+
     spec = {
         "type": "object",
         "additionalProperties": False,
@@ -174,6 +177,9 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
         },
         "required": ["httpMethod"]
     }
+
+    if "version" in full_schema["info"]:
+        schema.update({"version": full_schema["info"]["version"]})
 
     if method != "get":
         schema["properties"]["headers"]["properties"].update({"content-type": {

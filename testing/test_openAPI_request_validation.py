@@ -73,7 +73,7 @@ def test_request_translation_get():
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, dict()) == json_schema_request
+    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
 
 
 def test_request_translation_post():
@@ -242,7 +242,7 @@ def test_request_translation_post():
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, dict()) == json_schema_request
+    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
 
 
 def test_request_translation_post_no_requires():
@@ -397,7 +397,7 @@ def test_request_translation_post_no_requires():
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, dict()) == json_schema_request
+    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
 
 
 def test_request_translation_no_body_no_query():
@@ -500,7 +500,7 @@ def test_request_translation_no_body_no_query():
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, dict()) == json_schema_request
+    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
 
 
 def test_request_translation_with_reference():
@@ -532,6 +532,7 @@ def test_request_translation_with_reference():
     }
 
     open_api_full_schema_component = {
+        "info": dict(),
         "components": {
             "schemas": {
                 "example_object": {

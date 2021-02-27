@@ -2,6 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "/test_path-GET-200",
     "description": "success",
+    "version": "1.0.0",
     "type": "object",
     "additionalProperties": false,
     "properties": {

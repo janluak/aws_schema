@@ -2,6 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "/test_request_resource/{path_level1}/{path_level2}-PUT-201",
     "description": "Response for statusCode '201' for method 'PUT' on API 'response_test'",
+    "version": "1.0.0",
     "oneOf": [
         {
             "type": "object",

@@ -51,7 +51,7 @@ def test_response_translation_text_plain():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_application_json():
@@ -127,7 +127,7 @@ def test_response_translation_application_json():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_multiple_content_types():
@@ -185,7 +185,7 @@ def test_response_translation_multiple_content_types():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_additional_headers():
@@ -263,7 +263,7 @@ def test_response_translation_additional_headers():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_array():
@@ -343,7 +343,7 @@ def test_response_translation_array():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_with_reference():
@@ -367,6 +367,7 @@ def test_response_translation_with_reference():
     }
 
     components = {
+        "info": dict(),
         "components": {
             "schemas": {
                 "example_ref": {
@@ -458,6 +459,7 @@ def test_response_translation_with_reference_in_items():
     }
 
     components = {
+        "info": dict(),
         "components": {
             "schemas": {
                 "example_ref": {
@@ -557,7 +559,7 @@ def test_response_translation_no_body():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_no_body_with_header():
@@ -602,7 +604,7 @@ def test_response_translation_no_body_with_header():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 
 
 def test_response_translation_text_plain_without_schema():
@@ -651,5 +653,5 @@ def test_response_translation_text_plain_without_schema():
 
     from aws_schema.openAPI_converter import _convert_response
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
-                             open_api_response, dict()) == json_schema_response
+                             open_api_response, {"info": dict()}) == json_schema_response
 

@@ -104,5 +104,6 @@
         "pathParameters",
         "queryParameters"
     ],
+    "version": "1.0.0",
     "description": "Basic API\n---\nsome description"
 }
