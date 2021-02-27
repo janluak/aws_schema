@@ -308,19 +308,19 @@ def test_response_translation_array():
             "body": {
                 "type": "object",
                 "properties": {
-                        "example_key": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "key1": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["key1"]
-                            }
+                    "example_key": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "key1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["key1"]
                         }
                     }
+                }
             },
             "headers": {
                 "type": "object",
@@ -655,3 +655,157 @@ def test_response_translation_text_plain_without_schema():
     assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
                              open_api_response, {"info": dict()}) == json_schema_response
 
+
+def test_response_translation_propertyPattern():
+    open_api_path = "test_request_resource"
+    open_api_method = "post"
+    open_api_statusCode = 404
+    open_api_response = {
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^\d+$": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    json_schema_response = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "test_request_resource-POST-404",
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "statusCode": {
+                "type": "number"
+            },
+            "body": {
+                "type": "object",
+                "patternProperties": {
+                    "^\d+$": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": False
+            },
+            "headers": {
+                "type": "object",
+                "properties": {
+                    "content-type": {
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                }
+            }
+        },
+        "required": [
+            "statusCode",
+            "headers",
+            "body"
+        ]
+    }
+
+    from aws_schema.openAPI_converter import _convert_response
+    assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
+                             open_api_response, {"info": dict()}) == json_schema_response
+
+
+def test_response_translation_propertyPattern_with_ref():
+    open_api_path = "test_request_resource"
+    open_api_method = "post"
+    open_api_statusCode = 404
+    open_api_response = {
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "content": {
+            "application/json": {
+                "schema": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^\d+$": {
+                            "$ref": "#/components/schemas/example_ref"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    components = {
+        "info": dict(),
+        "components": {
+            "schemas": {
+                "example_ref": {
+                    "type": "object",
+                    "properties": {
+                        'example_key1': {
+                            'description': 'explaining example_key1',
+                            'type': 'string'
+                        },
+                        'example_key2': {
+                            'type': 'integer'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    json_schema_response = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "test_request_resource-POST-404",
+        "description": "Response for statusCode '404' for method 'POST' on API 'response_test'",
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "statusCode": {
+                "type": "number"
+            },
+            "body": {
+                "type": "object",
+                "patternProperties": {
+                    "^\d+$": {
+                        "type": "object",
+                        "properties": {
+                            "example_key1": {
+                                "description": "explaining example_key1",
+                                "type": "string"
+                            },
+                            "example_key2": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "additionalProperties": False
+            },
+            "headers": {
+                "type": "object",
+                "properties": {
+                    "content-type": {
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                }
+            }
+        },
+        "required": [
+            "statusCode",
+            "headers",
+            "body"
+        ]
+    }
+
+    from aws_schema.openAPI_converter import _convert_response
+    assert _convert_response(open_api_path, open_api_method, open_api_statusCode,
+                             open_api_response, components) == json_schema_response

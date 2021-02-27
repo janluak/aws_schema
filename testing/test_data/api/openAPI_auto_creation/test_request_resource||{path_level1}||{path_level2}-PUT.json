@@ -43,7 +43,13 @@
                 },
                 "body_key2": {
                     "type": "object",
-                    "description": "containing a not further specified dictionary"
+                    "patternProperties": {
+                        "^\\d+$": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "containing an object with only digit char keys",
+                    "additionalProperties": false
                 }
             },
             "required": [

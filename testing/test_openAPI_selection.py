@@ -86,7 +86,7 @@ def test_converter_path_method_response(open_api_schema):
 
 def test_select_request(open_api_schema, event):
     expected_request_schema = json_load_single(
-        f"{dirname(realpath(__file__))}/test_data/api/test_request_resource-PUT.json"
+        f"{dirname(realpath(__file__))}" + "/test_data/api/test_request_resource||{path_level1}||{path_level2}-PUT.json"
     )
 
     from aws_schema.openAPI_converter import OpenAPIConverter

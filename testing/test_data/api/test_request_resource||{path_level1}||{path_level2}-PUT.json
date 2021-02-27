@@ -13,7 +13,7 @@
             "type": "object",
             "additionalProperties": true,
             "properties": {
-                "Content-Type": {
+                "content-type": {
                     "type": "string",
                     "enum": [
                         "application/json"
@@ -31,19 +31,29 @@
                 }
             },
             "required": [
-                "Content-Type"
+                "content-type"
             ]
         },
         "body": {
             "type": "object",
             "properties": {
-                "key1": {
+                "body_key1": {
                     "type": "string",
                     "description": "containing only a string"
+                },
+                "body_key2": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^\\d+$": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "containing an object with only digit char keys",
+                    "additionalProperties": false
                 }
             },
             "required": [
-                "key1"
+                "body_key1"
             ],
             "additionalProperties": false
         },
@@ -100,5 +110,6 @@
         "pathParameters",
         "queryParameters"
     ],
+    "version": "1.0.0",
     "description": "Basic API\n---\nsome description"
 }

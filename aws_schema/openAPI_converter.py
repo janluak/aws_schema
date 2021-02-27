@@ -33,9 +33,16 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
             api_schema = {"items": api_schema, "type": "array"}
 
         if api_schema["type"] == "object":
-            if "properties" in api_schema:
-                for prop in api_schema["properties"]:
-                    api_schema["properties"][prop] = _schema_to_property(api_schema["properties"][prop], full_schema)
+            key = False
+            if "patternProperties" in api_schema:
+                api_schema["additionalProperties"] = False
+                key = "patternProperties"
+            elif "properties" in api_schema:
+                key = "properties"
+            if key:
+                for prop in api_schema[key]:
+                    api_schema[key][prop] = _schema_to_property(api_schema[key][prop], full_schema)
+
     elif "items" in api_schema:
         if "properties" in api_schema["items"]:
             for prop in api_schema["items"]["properties"]:

@@ -293,8 +293,8 @@ class TestAPIValidation(TestCase):
         api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
         api_data = {
             "httpMethod": "PUT",
-            "body": '{"key1": "some_string"}',
-            "headers": {"Content-Type": "application/json"},
+            "body": '{"body_key1": "some_string"}',
+            "headers": {"content-type": "application/json"},
             "pathParameters": {
                 "path_level1": "path_value1",
                 "path_level2": "path_value"

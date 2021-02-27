@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   description: "This is an example openAPI specification for testing purposes"
   version: 1.0.0
@@ -178,7 +178,10 @@ paths:
 
                 body_key2:
                     type: object
-                    description: containing a not further specified dictionary
+                    patternProperties:
+                      ^\d+$:
+                        type: string
+                    description: containing an object with only digit char keys
               required:
                 - body_key1
 
