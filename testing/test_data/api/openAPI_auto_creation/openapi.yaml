@@ -220,6 +220,15 @@ paths:
 
 components:
   schemas:
+    further_referenced_value:
+      type: object
+      properties:
+        some_key:
+          $ref: '#/components/schemas/further_referenced_value/properties/ref_key'
+        ref_key:
+          type: integer
+
+
     example_object:
       type: object
       properties:
@@ -227,7 +236,7 @@ components:
           type: string
           description: explaining example_key1
         example_key2:
-          type: integer
+          $ref: '#/components/schemas/further_referenced_value/properties/some_key'
 
 externalDocs:
   description: "Find out more about Swagger"

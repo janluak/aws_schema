@@ -15,6 +15,8 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
         try:
             key = next(keys)
         except StopIteration:
+            if "$ref" in schema:
+                return get_nested_from_dict(schema["$ref"][2:].split("/"), full_schema)
             return schema
         return get_nested_from_dict(keys, schema[key])
 
