@@ -101,6 +101,8 @@ class APIDataValidator(DataValidator):
             body = validation_error.context[0].__str__()
         elif len(validation_error.__str__().split("\n")) > 12:
             body = validation_error.message
+            if validation_error.absolute_path:
+                body += f" in {'.'.join(validation_error.absolute_path)}"
         else:
             body = validation_error.__str__()
 

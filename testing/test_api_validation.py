@@ -383,7 +383,7 @@ class TestAPIValidation(TestCase):
         self.assertEqual(
             {
                 "statusCode": 400,
-                "body": "Additional properties are not allowed ('unknown_key' was unexpected)",
+                "body": "Additional properties are not allowed ('unknown_key' was unexpected) in queryParameters",
                 "headers": {"Content-Type": "text/plain"},
             },
             TE.exception.args[0],
