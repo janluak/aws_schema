@@ -92,7 +92,7 @@ class APIDataValidator(DataValidator):
                         self.schema["properties"]["queryParameters"]["properties"][param_name]["items"]["type"]](
                         self.data["queryParameters"][param_name][param_no]
                     )
-                except (ValueError, SyntaxError):
+                except (ValueError, SyntaxError, KeyError):
                     pass
 
     @staticmethod

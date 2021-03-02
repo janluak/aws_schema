@@ -324,7 +324,7 @@ class TestAPIValidation(TestCase):
             file=api_schema_file, api_data=api_data, api_name="test_request_resource"
         )
 
-    def test_basic_with_parameter_casting_wrong_input(self):
+    def test_basic_with_parameter_casting_wrong_value(self):
         from aws_schema.api_validation import (
             APIDataValidator,
         )
@@ -359,3 +359,32 @@ class TestAPIValidation(TestCase):
             TE.exception.args[0],
         )
 
+    def test_basic_with_parameter_casting_wrong_keys(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_file = (
+            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
+        )
+        api_data = load_single(
+            f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
+        )
+
+        api_data["multiValueQueryStringParameters"]["unknown_key"] = ["125"]
+
+        with self.assertRaises(TypeError) as TE:
+            APIDataValidator(
+                file=api_schema_file,
+                api_data=api_data,
+                api_name="test_request_resource",
+            )
+
+        self.assertEqual(
+            {
+                "statusCode": 400,
+                "body": "Additional properties are not allowed ('unknown_key' was unexpected)",
+                "headers": {"Content-Type": "text/plain"},
+            },
+            TE.exception.args[0],
+        )
