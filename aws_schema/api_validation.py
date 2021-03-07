@@ -1,4 +1,3 @@
-from json import loads, JSONDecodeError
 from ._validation_base_class import DataValidator
 from .json_to_python_type import json_to_python_type_convert
 
@@ -18,7 +17,7 @@ class APIDataValidator(DataValidator):
         self.__api_name = api_name
         super().__init__(api_data, file, url, raw)
 
-        self.__decode_json_body()
+        self.__remove_empty_body()
         if self.httpMethod != "nonHTTP":
             self.__convert_none_to_empty_dict()
             self.__rename_multi_value_query_to_query_param()
@@ -59,21 +58,9 @@ class APIDataValidator(DataValidator):
             else dict()
         )
 
-    def __decode_json_body(self):
+    def __remove_empty_body(self):
         if "body" in self.data and self.data["body"] is None:
             del self.data["body"]
-
-        if "body" in self.data and not isinstance(self.data["body"], dict):
-            try:
-                self.data["body"] = loads(self.data["body"])
-            except (JSONDecodeError, TypeError):
-                raise TypeError(
-                    {
-                        "statusCode": 400,
-                        "body": "Body has to be json formatted",
-                        "headers": {"Content-Type": "text/plain"},
-                    }
-                )
 
     def __cast_path_n_query_parameters(self):
         if "pathParameters" in self.data:

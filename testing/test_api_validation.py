@@ -164,11 +164,7 @@ class TestAPIValidation(TestCase):
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
 
-        from json import loads, dumps
-
-        api_data["body"] = loads(api_data["body"])
         api_data["body"]["body_key1"] = 123
-        api_data["body"] = dumps(api_data["body"])
 
         with self.assertRaises(TypeError) as TE:
             APIDataValidator(
@@ -189,26 +185,6 @@ class TestAPIValidation(TestCase):
                 "headers": {"Content-Type": "text/plain"},
             },
             TE.exception.args[0],
-        )
-
-    def test_basic_with_body_directly_as_dict(self):
-        from aws_schema.api_validation import (
-            APIDataValidator,
-        )
-
-        api_schema_file = (
-            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
-        )
-        api_data = load_single(
-            f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
-        )
-
-        from json import loads
-
-        api_data["body"] = loads(api_data["body"])
-
-        APIDataValidator(
-            file=api_schema_file, api_data=api_data, api_name="test_request_resource"
         )
 
     def test_basic_with_missing_path_parameter(self):
@@ -278,7 +254,7 @@ class TestAPIValidation(TestCase):
         api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
         api_data = {
             "httpMethod": "POST",
-            "body": '{"key_1": "some_string"}'
+            "body": {"key_1": "some_string"}
         }
 
         APIDataValidator(
@@ -293,7 +269,7 @@ class TestAPIValidation(TestCase):
         api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
         api_data = {
             "httpMethod": "PUT",
-            "body": '{"body_key1": "some_string"}',
+            "body": {"body_key1": "some_string"},
             "headers": {"content-type": "application/json"},
             "pathParameters": {
                 "path_level1": "path_value1",
