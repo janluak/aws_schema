@@ -25,7 +25,7 @@ class ResponseDataValidator(DataValidator):
         except EnvironmentError:
             exception_text = f"no specified response schema available for statusCode {self.statusCode}\nresponse: {response_data}"
             if environ["API_RESPONSE_VERIFICATION"]["RETURN_INTERNAL_SERVER_ERROR"]:
-                raise EnvironmentError(
+                raise NotImplementedError(
                     {
                         "statusCode": 501,
                         "body": exception_text,

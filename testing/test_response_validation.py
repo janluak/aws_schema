@@ -1,6 +1,6 @@
 from os.path import dirname, realpath
 from os import chdir, getcwd
-from pytest import fixture
+from pytest import fixture, raises
 
 
 @fixture
@@ -101,3 +101,38 @@ def test_unspecified_status_code_response(response_validation_env, caplog):
 
     assert len(caplog.messages) == 1
     assert "no specified response schema available for statusCode 418" in caplog.text
+
+
+def test_unspecified_status_code_response_raising_error(response_validation_env, caplog):
+    from aws_environ_helper import environ
+
+    environ["API_RESPONSE_VERIFICATION"] = {"RETURN_INTERNAL_SERVER_ERROR": True}
+
+    from aws_schema.response_validation import (
+        ResponseDataValidator,
+    )
+
+    response_schema_file = (
+        f"{dirname(realpath(__file__))}/test_data/response/test_response_resource.json"
+    )
+    response_data = {
+        "statusCode": 418,
+        "body": "I'm a teapot",
+        "headers": {"Content-Type": "text/plain"},
+    }
+    with raises(NotImplementedError) as NI:
+        ResponseDataValidator(
+            file=response_schema_file,
+            response_data=response_data,
+            httpMethod="POST",
+            api_name="test_response_resource",
+        )
+
+    assert NI.value.args[0] == {
+        "statusCode": 501,
+        "body": 'no specified response schema available for statusCode 418\n'
+                'response: {\'statusCode\': 418, \'body\': "I\'m a teapot", '
+                "'headers': {'Content-Type': 'text/plain'}}",
+        "headers": {"Content-Type": "text/plain"}
+    }
+    assert len(caplog.messages) == 0
