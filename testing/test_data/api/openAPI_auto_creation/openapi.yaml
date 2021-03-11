@@ -103,7 +103,9 @@ paths:
                 type: object
                 properties:
                   ref_key:
-                    $ref: '#/components/schemas/example_object'
+                    oneOf:
+                      - $ref: '#/components/schemas/example_object'
+                      - type: string
         400:
           description: error
           headers:

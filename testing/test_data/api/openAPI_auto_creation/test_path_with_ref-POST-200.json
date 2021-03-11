@@ -24,16 +24,23 @@
             "type": "object",
             "properties": {
                 "ref_key": {
-                    "type": "object",
-                    "properties": {
-                        "example_key1": {
-                            "type": "string",
-                            "description": "explaining example_key1"
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "example_key1": {
+                                    "type": "string",
+                                  "description": "explaining example_key1"
+                                },
+                                "example_key2": {
+                                    "type": "integer"
+                                }
+                            }
                         },
-                        "example_key2": {
-                            "type": "integer"
+                        {
+                          "type": "string"
                         }
-                    }
+                    ]
                 }
             }
         }
