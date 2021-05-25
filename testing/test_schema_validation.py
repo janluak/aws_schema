@@ -154,6 +154,18 @@ class TestGetSubSchema(TestSchemaValidation):
         )
         self.assertEqual(nested_schema["properties"]["KEY1"], sub_schema)
 
+    def test_get_one_of_sub_schema(self):
+        sub_schema = self.validator.get_sub_schema(["oneOfKey", "oneOfKey1"])
+
+        self.assertEqual(
+            {
+                "oneOf": [
+                    {"type": "integer"},
+                    {"type": "string"}
+                ]
+            },
+            sub_schema
+        )
 
 class TestCheckSubItemType(TestSchemaValidation):
     @classmethod

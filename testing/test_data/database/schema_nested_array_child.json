@@ -17,6 +17,25 @@
           "type": "number"
         }
       }
+    },
+    "oneOfKey": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "oneOfKey1": {
+              "type": "integer"
+            }
+          }
+        },
+        {
+          "properties": {
+            "oneOfKey1": {
+              "type": "string"
+            }
+          }
+        }
+      ]
     }
   },
   "definitions": {

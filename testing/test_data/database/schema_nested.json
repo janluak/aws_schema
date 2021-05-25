@@ -93,6 +93,9 @@
       "items": {
         "$ref": "schema_nested_array_child.json#/properties"
       }
+    },
+    "oneOfKey": {
+      "$ref": "schema_nested_array_child.json#/properties/oneOfKey"
     }
   },
   "required": [

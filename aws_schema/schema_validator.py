@@ -100,6 +100,12 @@ class SchemaValidator:
                 )
                 return self.get_sub_schema(path_to_sub_schema, current_sub_schema[1])
 
+            elif "oneOf" in current_sub_schema:
+                one_of_types = list()
+                for item in current_sub_schema["oneOf"]:
+                    one_of_types.append(self.get_sub_schema(path_to_sub_schema, item))
+                current_sub_schema = {"oneOf": one_of_types}
+
             elif next(next_element) in current_sub_schema:
                 n = path_to_sub_schema[0]
                 return self.get_sub_schema(
