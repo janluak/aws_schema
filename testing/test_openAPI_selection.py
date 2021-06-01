@@ -150,7 +150,7 @@ def test_request_with_reference(open_api_schema):
 def test_response_with_reference(open_api_schema):
     expected_request_schema = json_load_single(
         f"{dirname(realpath(__file__))}" +
-        "/test_data/response/test_path_with_ref-POST-200.json"
+        "/test_data/api/openAPI_auto_creation/test_path_with_ref-POST-200.json"
     )
 
     from aws_schema.openAPI_converter import OpenAPIConverter
