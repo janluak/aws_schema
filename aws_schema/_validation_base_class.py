@@ -44,7 +44,7 @@ class DataValidator(ABC):
 
     @staticmethod
     @abstractmethod
-    def handle_exception(validation_error):
+    def handle_exception(validation_error, return_error_in_response):
         pass
 
     def __craft_full_origin(self, origin):
@@ -67,8 +67,8 @@ class DataValidator(ABC):
 
         return origin
 
-    def verify(self):
+    def verify(self, return_error_in_response):
         try:
             self.__schema_validator.validate(self.__data)
         except ValidationError as err:
-            self.handle_exception(err)
+            self.handle_exception(err, return_error_in_response)

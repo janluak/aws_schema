@@ -23,7 +23,7 @@ class APIDataValidator(DataValidator):
             self.__rename_multi_value_query_to_query_param()
             self.__cast_path_n_query_parameters()
 
-        self.verify()
+        self.verify(True)
 
     @property
     def httpMethod(self) -> str:
@@ -83,7 +83,7 @@ class APIDataValidator(DataValidator):
                     pass
 
     @staticmethod
-    def handle_exception(validation_error):
+    def handle_exception(validation_error, _):
         if validation_error.context:
             body = validation_error.context[0].__str__()
         elif len(validation_error.__str__().split("\n")) > 12:

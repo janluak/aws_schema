@@ -3,7 +3,7 @@ from json import load as json_load
 from jsonschema.validators import Draft7Validator, RefResolver
 from jsonschema.exceptions import ValidationError
 from os.path import dirname, abspath
-from aws_environ_helper import delete_keys_in_nested_dict, find_path_values_in_dict
+from .nested_dict_helper import delete_keys_in_nested_dict, find_path_values_in_dict
 from copy import deepcopy
 from pathlib import Path
 

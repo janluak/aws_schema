@@ -1,6 +1,5 @@
 import logging
 from ._validation_base_class import DataValidator
-from aws_environ_helper import environ
 
 logger = logging.getLogger("API Response Check")
 
@@ -16,15 +15,16 @@ class ResponseDataValidator(DataValidator):
         file: str = None,
         url: str = None,
         raw: dict = None,
+        return_error_in_response: bool = False
     ):
         self.__httpMethod = httpMethod
         self.__api_name = api_name
         try:
             super().__init__(response_data, file, url, raw)
-            self.verify()
+            self.verify(return_error_in_response)
         except EnvironmentError:
             exception_text = f"no specified response schema available for statusCode {self.statusCode}\nresponse: {response_data}"
-            if environ["API_RESPONSE_VERIFICATION"]["RETURN_INTERNAL_SERVER_ERROR"]:
+            if return_error_in_response:
                 raise NotImplementedError(
                     {
                         "statusCode": 501,
@@ -63,8 +63,8 @@ class ResponseDataValidator(DataValidator):
         return origin
 
     @staticmethod
-    def handle_exception(validation_error):
-        if environ["API_RESPONSE_VERIFICATION"]["RETURN_INTERNAL_SERVER_ERROR"]:
+    def handle_exception(validation_error, return_error_in_response):
+        if return_error_in_response:
             raise TypeError(
                 {
                     "statusCode": 500,
