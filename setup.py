@@ -30,6 +30,6 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     # https://pypi.org/pypi?%3Aaction=list_classifiers
-    install_requires=["boto3", "aws_environ_helper"],
+    install_requires=["boto3"],
     extra_require={"testing": ["pytest", "fil-io"]},
 )
