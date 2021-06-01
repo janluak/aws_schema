@@ -4,7 +4,7 @@ If development mode (=changes in package code directly delivered to python) `pip
 """
 
 from setuptools import setup, find_packages
-from aws_environ_helper import __version__
+from aws_schema import __version__
 
 # https://python-packaging.readthedocs.io/en/latest/minimal.html
 
@@ -15,6 +15,7 @@ setup(
     name="aws_schema",
     version=__version__,
     description="simple schema verification for AWS (Serverless)",
+    url="https://github.com/janluak/aws_schema",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Jan Lukas Braje",
@@ -30,6 +31,6 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     # https://pypi.org/pypi?%3Aaction=list_classifiers
-    install_requires=["boto3"],
+    install_requires=["boto3", "jsonschema"],
     extra_require={"testing": ["pytest", "fil-io"]},
 )
