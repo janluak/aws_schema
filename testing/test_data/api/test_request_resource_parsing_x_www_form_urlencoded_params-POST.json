@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Basic API",
+  "description": "Some basic template for describing an API",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "httpMethod": {
+      "description": "the ReST method(s) type allowed for this API",
+      "type": "string",
+      "const": "POST"
+    },
+    "headers": {
+      "description": "request header",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "isBase64Encoded": {
+          "description": "e.g. allow only not encoded requests",
+          "type": "boolean",
+          "const": false
+        },
+        "requestContext": {
+          "description": "if you want to make sure, the requestContext was provided",
+          "type": "object"
+        }
+      },
+      "required": [
+      ]
+    },
+    "body": {
+      "description": "contents of the request body, x-www-form-urlencoded formatted",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "body_key1": {
+          "type": "array",
+          "items": {
+            "description": "containing only a string",
+            "type": "string"
+          }
+        },
+        "body_key2": {
+          "type": "array",
+          "items": {
+            "description": "containing a further specified array",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "body_key3": {
+          "type": "array",
+          "items": {
+            "description": "containing a not further specified set",
+            "type": "object",
+            "properties": {
+              "sub_key3.1": {
+                "type": "string"
+              },
+              "sub_key3.2": {
+                "type": "integer"
+              },
+              "sub_key3.3": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "body_key4": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "double_query_key": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "headers",
+    "body"
+  ]
+}

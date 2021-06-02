@@ -1,0 +1,9 @@
+{
+  "httpMethod": "POST",
+  "headers": {
+    "isBase64Encoded": false,
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "body": {"body_key1": ["some_string"], "body_key2": ["[\"abc\", \"0123\"]"], "body_key3": ["{\"sub_key3.1\": \"02\", \"sub_key3.2\": 2}"], "body_key4": ["[2.34, 45.6]"], "double_query_key": [2, 4]},
+  "resource": "/test_request_resource_parsing_x_www_form_urlencoded_params"
+}

@@ -364,3 +364,22 @@ class TestAPIValidation(TestCase):
             },
             TE.exception.args[0],
         )
+
+    def test_x_www_form_url_parameter_casting(self):
+        from aws_schema.api_validation import (
+            APIDataValidator,
+        )
+
+        api_schema_file = (
+            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_x_www_form_urlencoded_params-POST.json"
+        )
+        api_data = load_single(
+            f"{dirname(realpath(__file__))}/test_data/api/request_resource_for_parsing_x_www_form_urlencoded_params.json"
+        )
+        parsed_data = APIDataValidator(
+            file=api_schema_file, api_data=api_data, api_name="test_request_resource"
+        ).data
+
+        assert parsed_data["body"] == {"body_key1": ["some_string"], "body_key2": [["abc", "0123"]],
+                                       "body_key3": [{"sub_key3.1": "02", "sub_key3.2": 2}],
+                                       "body_key4": [[2.34, 45.6]], "double_query_key": [2, 4]}
