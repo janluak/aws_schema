@@ -75,6 +75,27 @@ paths:
                 type: string
                 example: not found
 
+  /test_path_with_unspecified_body:
+    post:
+      tags:
+        - main
+      summary: "Basic API"
+      description: "some description"
+      operationId: "operationID ref"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+
   /test_path_with_ref:
     post:
       tags:

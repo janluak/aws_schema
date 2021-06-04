@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "/test_path_with_unspecified_body-POST",
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+        "httpMethod": {
+            "const": "POST",
+            "description": "the ReST method(s) type allowed for this API",
+            "type": "string"
+        },
+        "headers": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "content-type": {
+                    "type": "string",
+                    "enum": [
+                        "application/json"
+                    ]
+                }
+            },
+            "required": [
+                "content-type"
+            ]
+        },
+        "body": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "pathParameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
+        },
+        "queryParameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
+        }
+    },
+    "required": [
+        "headers",
+        "httpMethod"
+    ],
+    "version": "1.0.0",
+    "description": "Basic API\n---\nsome description"
+}

@@ -240,7 +240,8 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
             schema["properties"]["headers"]["properties"]["content-type"]["enum"].append(content_type)
 
             body = _schema_to_property(api_schema["requestBody"]["content"][content_type]["schema"], full_schema)
-            body.update({"additionalProperties": False})
+            if "additionalProperties" not in body:
+                body.update({"additionalProperties": False})
             if "required" in body and body["required"]:
                 required_parameter_types.add("body")
             bodies.append(body)

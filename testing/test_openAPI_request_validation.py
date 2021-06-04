@@ -604,3 +604,65 @@ def test_request_translation_with_reference():
     assert _convert_request(
         open_api_path, open_api_method, open_api_request, open_api_full_schema_component
     ) == json_schema_request
+
+
+def test_request_translation_with_unspecified_body():
+    open_api_path = "test_path_with_unspecified_body"
+    open_api_method = "post"
+    open_api_request = {
+        "summary": "Test API",
+        "description": "some description",
+        "operationId": "operationID",
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "additionalProperties": True
+                    }
+                }
+            }
+        }
+    }
+
+    open_api_full_schema_component = {
+        "info": dict()
+    }
+
+    json_schema_request = {
+        '$schema': 'http://json-schema.org/draft-07/schema#',
+        'additionalProperties': True,
+        'description': 'Test API\n---\nsome description',
+        'properties': {
+            'body': {
+                'additionalProperties': True,
+                'type': 'object'},
+            'headers': {
+                'additionalProperties': True,
+                'properties': {
+                    'content-type': {
+                        'enum': ['application/json'],
+                        'type': 'string'}},
+                'required': ['content-type'],
+                'type': 'object'},
+            'httpMethod': {'const': 'POST',
+                           'description': 'the ReST method(s) type allowed '
+                                          'for this API',
+                           'type': 'string'},
+            'pathParameters': {'additionalProperties': False,
+                               'properties': dict(),
+                               'required': list(),
+                               'type': 'object'},
+            'queryParameters': {'additionalProperties': False,
+                                'properties': dict(),
+                                'required': list(),
+                                'type': 'object'}},
+        'required': ['headers', 'httpMethod'],
+        'title': 'test_path_with_unspecified_body-POST',
+        'type': 'object'
+    }
+
+    from aws_schema.openAPI_converter import _convert_request
+    assert _convert_request(
+        open_api_path, open_api_method, open_api_request, open_api_full_schema_component
+    ) == json_schema_request
