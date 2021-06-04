@@ -40,35 +40,19 @@ def _cast_query_parameter(data, schema):
 
 def _cast_x_www_form_urlencoded(data, schema):
     if isinstance(data, str):
-        return json_to_python_type_convert[schema["type"]](data)
+        data = json_to_python_type_convert[schema["type"]](data)
 
-    elif isinstance(data, dict):
-        for key in data:
-            if key in schema:
-                if key_type := schema[key].get("type", None):
-                    if key_type != "array":
-                        [data[key]] = data[key]
-                        data[key] = json_to_python_type_convert[schema[key]["type"]](
-                            data[key]
-                        )
-                        if key_type == "object":
-                            for sub_key in data[key]:
-                                data[key][sub_key] = _cast_x_www_form_urlencoded(
-                                    data[key][sub_key],
-                                    schema[key]["properties"][sub_key],
-                                )
-                    else:
-                        data[key] = _cast_x_www_form_urlencoded(
-                            data[key], schema[key]["items"]
-                        )
-
-    elif isinstance(data, list):
+    if isinstance(data, list):
         for item_no, item in enumerate(data):
             data[item_no] = _cast_x_www_form_urlencoded(item, schema)
-        return data
+    if isinstance(data, dict):
+        for key in data:
+            if "properties" in schema and key in schema["properties"]:
+                data[key] = _cast_x_www_form_urlencoded(data[key], schema["properties"][key])
+            elif "items" in schema.get(key, dict()):
+                data[key] = _cast_x_www_form_urlencoded(data[key], schema[key]["items"])
 
-    else:
-        return data
+    return data
 
 
 def cast_parameter(data, schema):
@@ -78,5 +62,5 @@ def cast_parameter(data, schema):
         _cast_query_parameter(data, schema)
     if _get_content_type(data) == "application/x-www-form-urlencoded":
         _cast_x_www_form_urlencoded(
-            data["body"], schema["properties"]["body"]["properties"]
+            data["body"], schema["properties"].get("body", dict()).get("properties", dict())
         )
