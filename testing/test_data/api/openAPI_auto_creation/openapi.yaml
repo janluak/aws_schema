@@ -114,6 +114,12 @@ paths:
                   description: containing only a string
                 body_key2:
                   $ref: '#/components/schemas/example_object'
+                body_key3:
+                  type: array
+                  items:
+                    properties:
+                      referenced_property:
+                        $ref: '#/components/schemas/example_object/properties/example_key1'
               required: [body_key2]
       responses:
         200:

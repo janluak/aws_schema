@@ -49,7 +49,7 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
                 for prop in api_schema[key]:
                     api_schema[key][prop] = _schema_to_property(api_schema[key][prop], full_schema)
 
-    elif "items" in api_schema:
+    if "items" in api_schema:
         if "properties" in api_schema["items"]:
             for prop in api_schema["items"]["properties"]:
                 api_schema["items"]["properties"][prop] = _schema_to_property(api_schema["items"]["properties"][prop], full_schema)

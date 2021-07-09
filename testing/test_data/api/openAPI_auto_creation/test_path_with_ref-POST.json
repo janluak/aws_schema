@@ -42,6 +42,17 @@
                             "type": "integer"
                         }
                     }
+                },
+                "body_key3": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "referenced_property": {
+                                "description": "explaining example_key1",
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             },
             "required": [
