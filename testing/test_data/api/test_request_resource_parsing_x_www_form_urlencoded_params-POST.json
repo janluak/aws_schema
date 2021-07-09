@@ -33,14 +33,14 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "body_key1": {
+        "type_string_key": {
           "type": "array",
           "items": {
             "description": "containing only a string",
             "type": "string"
           }
         },
-        "body_key2": {
+        "type_list_of_strings_key": {
           "type": "array",
           "items": {
             "description": "containing a further specified array",
@@ -50,7 +50,7 @@
             }
           }
         },
-        "body_key3": {
+        "type_object_key": {
           "type": "array",
           "items": {
             "description": "containing a not further specified set",
@@ -71,7 +71,7 @@
             }
           }
         },
-        "body_key4": {
+        "type_list_of_numbers_key": {
           "type": "array",
           "items": {
             "type": "array",

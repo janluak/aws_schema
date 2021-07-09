@@ -380,6 +380,10 @@ class TestAPIValidation(TestCase):
             file=api_schema_file, api_data=api_data, api_name="test_request_resource"
         ).data
 
-        assert parsed_data["body"] == {"body_key1": ["some_string"], "body_key2": [["abc", "0123"]],
-                                       "body_key3": [{"sub_key3.1": "02", "sub_key3.2": 2}],
-                                       "body_key4": [[2.34, 45.6]], "double_query_key": [2, 4]}
+        assert parsed_data["body"] == {
+            "type_string_key": ["some_string"],
+            "type_list_of_strings_key": [["abc", "0123"]],
+            "type_object_key": [{"sub_key3.1": "02", "sub_key3.2": 2}],
+            "type_list_of_numbers_key": [[2.34, 45.6]],
+            "double_query_key": [2, 4]
+        }

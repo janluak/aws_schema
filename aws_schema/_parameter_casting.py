@@ -39,12 +39,14 @@ def _cast_query_parameter(data, schema):
 
 
 def _cast_x_www_form_urlencoded(data, schema):
+    converted = False
     if isinstance(data, str):
         data = json_to_python_type_convert[schema["type"]](data)
+        converted = True
 
     if isinstance(data, list):
         for item_no, item in enumerate(data):
-            data[item_no] = _cast_x_www_form_urlencoded(item, schema)
+            data[item_no] = _cast_x_www_form_urlencoded(item, schema if not converted else schema["items"])
     if isinstance(data, dict):
         for key in data:
             if "properties" in schema and key in schema["properties"]:
