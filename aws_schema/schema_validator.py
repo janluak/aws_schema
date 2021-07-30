@@ -17,12 +17,19 @@ __all__ = [
 
 
 class SchemaValidator:
-    def __init__(self, file: str = None, url: str = None, raw: dict = None):
+    def __init__(
+            self,
+            file: str = None,
+            url: str = None,
+            raw: dict = None,
+            custom_validator: _current_validator = _current_validator
+    ):
         if not any(i for i in [file, url, raw]):
             raise ValueError("one input must be specified")
         self.__file = file
         self.__url = url
         self.__raw = raw
+        self.__base_validator = custom_validator
 
         self.__resolver = None
 
@@ -124,7 +131,7 @@ class SchemaValidator:
 
             relevant_sub_schema = self.get_sub_schema(path_to_new_attribute)
             try:
-                _current_validator(
+                self.__base_validator(
                     relevant_sub_schema, resolver=self.validator.resolver,
                 ).validate(new_values[path_no])
             except ValidationError as VE:
@@ -149,11 +156,11 @@ class SchemaValidator:
         if no_required_key:
             schema = deepcopy(self.__raw_schema)
             delete_keys_in_nested_dict(schema, ["required"])
-            self.__validator_without_required_check = _current_validator(
+            self.__validator_without_required_check = self.__base_validator(
                 schema, resolver=self.__resolver
             )
         else:
-            self.__validator = _current_validator(
+            self.__validator = self.__base_validator(
                 self.__raw_schema, resolver=self.__resolver
             )
 

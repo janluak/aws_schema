@@ -259,3 +259,60 @@ class TestCheckSubItemType(TestSchemaValidation):
 
         with self.assertRaises(ValidationError):
             self.validator.validate_sub_part({"some_array": [[[1]]]})
+
+
+class TestCustomValidator(TestSchemaValidation):
+    @staticmethod
+    def is_set(checker, instance):
+        return isinstance(instance, set)
+
+    schema = {
+        "properties": {
+            "some_string": {"type": "string"},
+            "some_set": {"type": "set"}
+        }
+    }
+    item = {
+        "some_string": "abc",
+        "some_set": {"a", "b", "c"}
+    }
+
+    def test_with_standard_validator(self):
+        from aws_schema import SchemaValidator
+        from jsonschema.exceptions import UnknownType
+
+        validator = SchemaValidator(raw=self.schema)
+        with self.assertRaises(UnknownType):
+            validator.validate(self.item)
+
+    def test_with_custom_validator(self):
+        from jsonschema.validators import Draft7Validator, extend
+        from aws_schema import SchemaValidator
+
+        custom_validator = extend(
+            Draft7Validator,
+            type_checker=Draft7Validator.TYPE_CHECKER.redefine_many(
+                {
+                    u"set": self.is_set
+                }
+            )
+        )
+
+        validator = SchemaValidator(raw=self.schema, custom_validator=custom_validator)
+        validator.validate(self.item)
+
+    def test_part_with_custom_validator(self):
+        from jsonschema.validators import Draft7Validator, extend
+        from aws_schema import SchemaValidator
+
+        custom_validator = extend(
+            Draft7Validator,
+            type_checker=Draft7Validator.TYPE_CHECKER.redefine_many(
+                {
+                    u"set": self.is_set
+                }
+            )
+        )
+
+        validator = SchemaValidator(raw=self.schema, custom_validator=custom_validator)
+        validator.validate_sub_part({"some_set": self.item["some_set"]})
