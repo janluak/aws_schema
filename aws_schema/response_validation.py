@@ -22,7 +22,7 @@ class ResponseDataValidator(DataValidator):
         try:
             super().__init__(response_data, file, url, raw)
             self.verify(return_error_in_response)
-        except EnvironmentError:
+        except NotImplementedError:
             exception_text = f"no specified response schema available for statusCode {self.statusCode}\nresponse: {response_data}"
             if return_error_in_response:
                 raise NotImplementedError(

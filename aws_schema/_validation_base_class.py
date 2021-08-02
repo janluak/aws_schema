@@ -16,7 +16,7 @@ class DataValidator(ABC):
         try:
             self.__schema_validator = SchemaValidator(file, url, raw)
         except FileNotFoundError:
-            raise EnvironmentError(
+            raise NotImplementedError(
                 {
                     "statusCode": 501,
                     "body": "API is not defined",

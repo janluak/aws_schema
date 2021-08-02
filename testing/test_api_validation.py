@@ -107,7 +107,7 @@ class TestAPIValidation(TestCase):
         )
         api_data["httpMethod"] = "WRONG"
 
-        with self.assertRaises(EnvironmentError) as TE:
+        with self.assertRaises(NotImplementedError) as TE:
             APIDataValidator(
                 file=api_schema_file,
                 api_data=api_data,

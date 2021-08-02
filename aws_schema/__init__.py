@@ -1,4 +1,4 @@
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from .schema_validator import SchemaValidator
 from .api_validation import APIDataValidator
