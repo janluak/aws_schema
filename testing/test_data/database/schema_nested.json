@@ -67,6 +67,10 @@
               }
             }
           }
+        },
+        "KEY2": {
+          "type": "object",
+          "description": "no further specified object"
         }
       }
     },

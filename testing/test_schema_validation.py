@@ -113,12 +113,13 @@ class TestGetSubSchema(TestSchemaValidation):
         cls.validator = SchemaValidator(file=cls.raw_schema_file)
 
     def test_get_first_level(self):
-        sub_schema = self.validator.get_sub_schema(["some_dict"])
+        sub_schema, depth = self.validator.get_sub_schema(["some_dict"])
 
         self.assertEqual(self.raw_schema["properties"]["some_dict"], sub_schema)
+        self.assertEqual(1, depth)
 
     def test_get_nested_dict(self):
-        sub_schema = self.validator.get_sub_schema(
+        sub_schema, depth = self.validator.get_sub_schema(
             ["some_nested_dict", "KEY1", "subKEY2"]
         )
 
@@ -128,14 +129,16 @@ class TestGetSubSchema(TestSchemaValidation):
             ]["subKEY2"],
             sub_schema,
         )
+        self.assertEqual(3, depth)
 
     def test_get_array(self):
-        sub_schema = self.validator.get_sub_schema(["some_array"])
+        sub_schema, depth = self.validator.get_sub_schema(["some_array"])
 
         self.assertEqual(self.raw_schema["properties"]["some_array"], sub_schema)
+        self.assertEqual(1, depth)
 
     def test_get_referenced_sub_schema_from_dict(self):
-        sub_schema = self.validator.get_sub_schema(
+        sub_schema, depth = self.validator.get_sub_schema(
             ["some_nested_dict", "KEY1", "subKEY3"]
         )
 
@@ -145,17 +148,19 @@ class TestGetSubSchema(TestSchemaValidation):
         self.assertEqual(
             nested_schema["definitions"]["third_nested_dict_key"], sub_schema
         )
+        self.assertEqual(3, depth)
 
     def test_get_referenced_sub_schema_from_array(self):
-        sub_schema = self.validator.get_sub_schema(["nested_array", "KEY1"])
+        sub_schema, depth = self.validator.get_sub_schema(["nested_array", "KEY1"])
 
         nested_schema = load_single(
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested_array_child.json"
         )
         self.assertEqual(nested_schema["properties"]["KEY1"], sub_schema)
+        self.assertEqual(2, depth)
 
     def test_get_one_of_sub_schema(self):
-        sub_schema = self.validator.get_sub_schema(["oneOfKey", "oneOfKey1"])
+        sub_schema, depth = self.validator.get_sub_schema(["oneOfKey", "oneOfKey1"])
 
         self.assertEqual(
             {
@@ -166,6 +171,18 @@ class TestGetSubSchema(TestSchemaValidation):
             },
             sub_schema
         )
+        self.assertEqual(2, depth)
+
+    def test_get_subschema_with_more_depth_than_available(self):
+        sub_schema, depth = self.validator.get_sub_schema(
+            ["some_nested_dict", "KEY2", "anySubKey", "nextSubLevel"]
+        )
+
+        self.assertEqual(
+            self.raw_schema["properties"]["some_nested_dict"]["properties"]["KEY2"],
+            sub_schema,
+        )
+        self.assertEqual(2, depth)
 
 class TestCheckSubItemType(TestSchemaValidation):
     @classmethod
@@ -187,6 +204,9 @@ class TestCheckSubItemType(TestSchemaValidation):
 
     def test_nested_dict_end_value(self):
         self.validator.validate_sub_part({"some_nested_dict": {"KEY1": {"subKEY2": 4}}})
+
+    def test_nested_dict_unspecified_sub_type(self):
+        self.validator.validate_sub_part({"some_nested_dict": {"KEY2": {"anyKey": "any string at lowest level"}}})
 
     def test_nested_dict_end_value_wrong_value_with_schema_error_path(self):
         from jsonschema import ValidationError
