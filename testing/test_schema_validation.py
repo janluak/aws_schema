@@ -171,7 +171,7 @@ class TestGetSubSchema(TestSchemaValidation):
             },
             sub_schema
         )
-        self.assertEqual(2, depth)
+        self.assertEqual(3, depth)
 
     def test_get_subschema_with_more_depth_than_available(self):
         sub_schema, depth = self.validator.get_sub_schema(

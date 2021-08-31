@@ -113,9 +113,7 @@ class SchemaValidator:
 
             elif "oneOf" in current_sub_schema:
                 one_of_types = list()
-                depth += 1
                 for item in current_sub_schema["oneOf"]:
-                    depth -= 1
                     schema_part, depth = self.get_sub_schema(path_to_sub_schema, item, depth)
                     one_of_types.append(schema_part)
                 current_sub_schema = {"oneOf": one_of_types}
