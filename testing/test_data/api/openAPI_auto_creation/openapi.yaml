@@ -122,7 +122,7 @@ paths:
                         $ref: '#/components/schemas/example_object/properties/example_key1'
               required: [body_key2]
       responses:
-        200:
+        "200":
           description: success
           content:
             application/json:

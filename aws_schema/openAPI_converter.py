@@ -281,11 +281,16 @@ class _OpenAPIResponses:
         return self.__responses[statusCode]
 
     def __resolve_response(self, statusCode):
+        try:
+            api_schema = self.origin_schema[int(statusCode)]
+        except KeyError:
+            api_schema = self.origin_schema[str(statusCode)]
+
         self.__responses[statusCode] = _convert_response(
             path=self.method.path.path_name,
             method=self.method.method_name,
             statusCode=statusCode,
-            api_schema=self.origin_schema[statusCode],
+            api_schema=api_schema,
             full_schema=self.method.path.origin.origin_schema
         )
 
