@@ -30,7 +30,11 @@ def test_converter_path(open_api_schema):
 
 
 def test_converter_path_method(open_api_schema):
-    from aws_schema.openAPI_converter import OpenAPIConverter, _OpenAPIPath, _OpenAPIMethod
+    from aws_schema.openAPI_converter import (
+        OpenAPIConverter,
+        _OpenAPIPath,
+        _OpenAPIMethod,
+    )
 
     converter = OpenAPIConverter(open_api_schema)
 
@@ -46,11 +50,15 @@ def test_converter_path_method(open_api_schema):
 
     assert method.path.path_name == "/test_request_resource/{path_level1}/{path_level2}"
     assert method.path.origin_schema == open_api_schema["paths"][test_path]
-    assert len(path.methods) == 1 and list(path.methods.keys())[0] == test_method.lower()
+    assert (
+        len(path.methods) == 1 and list(path.methods.keys())[0] == test_method.lower()
+    )
 
     assert method.method_name == test_method.lower()
 
-    assert method.origin_schema == open_api_schema["paths"][test_path][test_method.lower()]
+    assert (
+        method.origin_schema == open_api_schema["paths"][test_path][test_method.lower()]
+    )
 
 
 def test_converter_path_method_response(open_api_schema):
@@ -64,20 +72,30 @@ def test_converter_path_method_response(open_api_schema):
     response_object = converter[test_path][test_method].response
 
     assert isinstance(response_object, _OpenAPIResponses)
-    assert response_object.method.path.path_name == "/test_request_resource/{path_level1}/{path_level2}"
-    assert response_object.method.path.origin_schema == open_api_schema["paths"][test_path]
+    assert (
+        response_object.method.path.path_name
+        == "/test_request_resource/{path_level1}/{path_level2}"
+    )
+    assert (
+        response_object.method.path.origin_schema == open_api_schema["paths"][test_path]
+    )
 
-    assert response_object.origin_schema == open_api_schema["paths"][test_path][test_method.lower()]["responses"]
+    assert (
+        response_object.origin_schema
+        == open_api_schema["paths"][test_path][test_method.lower()]["responses"]
+    )
     assert len(response_object.origin_schema) == 2
     assert set(response_object.origin_schema) == {201, 404}
 
 
 def test_select_request(open_api_schema, event):
     expected_request_schema = load_json_file(
-        f"{dirname(realpath(__file__))}" + "/test_data/api/test_request_resource||{path_level1}||{path_level2}-PUT.json"
+        f"{dirname(realpath(__file__))}"
+        + "/test_data/api/test_request_resource||{path_level1}||{path_level2}-PUT.json"
     )
 
     from aws_schema.openAPI_converter import OpenAPIConverter
+
     converter = OpenAPIConverter(open_api_schema)
 
     assert converter[event["resource"]]["put"].request == expected_request_schema
@@ -91,7 +109,8 @@ def test_response201(open_api_schema):
     from aws_schema.openAPI_converter import OpenAPIConverter
 
     response_schema = OpenAPIConverter(open_api_schema)[
-        "/test_request_resource/{path_level1}/{path_level2}"]["put"].response[201]
+        "/test_request_resource/{path_level1}/{path_level2}"
+    ]["put"].response[201]
 
     assert response_schema == expected_response_schema
 
@@ -104,7 +123,8 @@ def test_response404(open_api_schema):
     from aws_schema.openAPI_converter import OpenAPIConverter
 
     response_schema = OpenAPIConverter(open_api_schema)[
-        "/test_request_resource/{path_level1}/{path_level2}"]["put"].response[404]
+        "/test_request_resource/{path_level1}/{path_level2}"
+    ]["put"].response[404]
 
     assert response_schema == expected_response_schema
 
@@ -117,33 +137,36 @@ def test_response_from_string_statusCode(open_api_schema):
     from aws_schema.openAPI_converter import OpenAPIConverter
 
     response_schema = OpenAPIConverter(open_api_schema)[
-        "/test_request_resource/{path_level1}/{path_level2}"]["put"].response["404"]
+        "/test_request_resource/{path_level1}/{path_level2}"
+    ]["put"].response["404"]
 
     assert response_schema == expected_response_schema
 
 
 def test_request_with_reference(open_api_schema):
     expected_request_schema = load_json_file(
-        f"{dirname(realpath(__file__))}" +
-        "/test_data/api/test_path_with_ref-POST.json"
+        f"{dirname(realpath(__file__))}" + "/test_data/api/test_path_with_ref-POST.json"
     )
 
     from aws_schema.openAPI_converter import OpenAPIConverter
 
-    request_schema = OpenAPIConverter(open_api_schema)["/test_path_with_ref"]["post"].request
+    request_schema = OpenAPIConverter(open_api_schema)["/test_path_with_ref"][
+        "post"
+    ].request
 
     assert request_schema == expected_request_schema
 
 
 def test_response_with_reference(open_api_schema):
     expected_request_schema = load_json_file(
-        f"{dirname(realpath(__file__))}" +
-        "/test_data/api/openAPI_auto_creation/test_path_with_ref-POST-200.json"
+        f"{dirname(realpath(__file__))}"
+        + "/test_data/api/openAPI_auto_creation/test_path_with_ref-POST-200.json"
     )
 
     from aws_schema.openAPI_converter import OpenAPIConverter
 
-    request_schema = OpenAPIConverter(open_api_schema)["/test_path_with_ref"]["post"].response["200"]
+    request_schema = OpenAPIConverter(open_api_schema)["/test_path_with_ref"][
+        "post"
+    ].response["200"]
 
     assert request_schema == expected_request_schema
-

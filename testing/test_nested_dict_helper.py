@@ -3,8 +3,6 @@ from os import environ as os_environ
 from os.path import dirname, realpath
 from os import chdir, getcwd
 from copy import deepcopy
-from hashlib import blake2b
-from json import dumps
 
 reference_dict = {
     "some_string": "abcdef",
@@ -57,8 +55,14 @@ class TestDeleteKeysInNestedDict(TestNestedDict):
         )
 
         with self.assertRaises(TypeError) as TE:
-            self.assertEqual(reference_dict, delete_keys_in_nested_dict(reference_dict, "some string"))
-        self.assertEqual(("dict_keys_to_delete must be a list, given some string",), TE.exception.args)
+            self.assertEqual(
+                reference_dict,
+                delete_keys_in_nested_dict(reference_dict, "some string"),
+            )
+        self.assertEqual(
+            ("dict_keys_to_delete must be a list, given some string",),
+            TE.exception.args,
+        )
 
     def test_delete_top_level(self):
         from aws_schema.nested_dict_helper import (

@@ -7,7 +7,9 @@ __all__ = ["OpenAPIConverter"]
 __JSON_SCHEMA_DRAFT = "http://json-schema.org/draft-07/schema#"
 
 
-def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool = False) -> dict:
+def _schema_to_property(
+    api_schema: dict, full_schema: dict, query_param: bool = False
+) -> dict:
     json_schema = dict()
 
     def get_nested_from_dict(keys: (list, iter), schema: dict) -> dict:
@@ -21,14 +23,20 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
         return get_nested_from_dict(keys, schema[key])
 
     if "$ref" in api_schema:
-        api_schema = get_nested_from_dict(api_schema["$ref"][2:].split("/"), full_schema)
+        api_schema = get_nested_from_dict(
+            api_schema["$ref"][2:].split("/"), full_schema
+        )
 
     elif "items" in api_schema and "$ref" in api_schema["items"]:
-        api_schema["items"] = get_nested_from_dict(api_schema["items"]["$ref"][2:].split("/"), full_schema)
+        api_schema["items"] = get_nested_from_dict(
+            api_schema["items"]["$ref"][2:].split("/"), full_schema
+        )
 
     elif "oneOf" in api_schema:
         for oneOf_no in range(len(api_schema["oneOf"])):
-            api_schema["oneOf"][oneOf_no] = _schema_to_property(api_schema["oneOf"][oneOf_no], full_schema)
+            api_schema["oneOf"][oneOf_no] = _schema_to_property(
+                api_schema["oneOf"][oneOf_no], full_schema
+            )
 
     if "example" in api_schema:
         json_schema.update({"examples": [api_schema["example"]]})
@@ -47,13 +55,16 @@ def _schema_to_property(api_schema: dict, full_schema: dict, query_param: bool =
                 key = "properties"
             if key:
                 for prop in api_schema[key]:
-                    api_schema[key][prop] = _schema_to_property(api_schema[key][prop], full_schema)
+                    api_schema[key][prop] = _schema_to_property(
+                        api_schema[key][prop], full_schema
+                    )
 
     if "items" in api_schema:
         if "properties" in api_schema["items"]:
             for prop in api_schema["items"]["properties"]:
-                api_schema["items"]["properties"][prop] = _schema_to_property(api_schema["items"]["properties"][prop], full_schema)
-
+                api_schema["items"]["properties"][prop] = _schema_to_property(
+                    api_schema["items"]["properties"][prop], full_schema
+                )
 
     json_schema.update(api_schema)
 
@@ -64,7 +75,7 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
     schema = {
         "$schema": __JSON_SCHEMA_DRAFT,
         "title": f"{path}-{method.upper()}-{statusCode}",
-        "description": api_schema["description"] if "description" in api_schema else ""
+        "description": api_schema["description"] if "description" in api_schema else "",
     }
 
     if "version" in full_schema["info"]:
@@ -74,17 +85,10 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         "type": "object",
         "additionalProperties": False,
         "properties": {
-            "statusCode": {
-                "type": "number"
-            },
-            "headers": {
-                "type": "object",
-                "additionalProperties": True
-            }
+            "statusCode": {"type": "number"},
+            "headers": {"type": "object", "additionalProperties": True},
         },
-        "required": [
-            "statusCode"
-        ]
+        "required": ["statusCode"],
     }
 
     if "content" in api_schema:
@@ -94,7 +98,9 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
                 "patternProperties": {
                     "[cC]ontent-[tT]ype": {
                         "type": "string",
-                        "enum": [i for i in api_schema["content"].keys() if i != "example"]
+                        "enum": [
+                            i for i in api_schema["content"].keys() if i != "example"
+                        ],
                     }
                 }
             }
@@ -108,12 +114,15 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         if "properties" not in spec["properties"]["headers"]:
             spec["properties"]["headers"]["properties"] = dict()
         for header in api_schema["headers"]:
-            spec["properties"]["headers"]["properties"].update({
-                header: _schema_to_property(api_schema["headers"][header]["schema"], full_schema)
-            })
+            spec["properties"]["headers"]["properties"].update(
+                {
+                    header: _schema_to_property(
+                        api_schema["headers"][header]["schema"], full_schema
+                    )
+                }
+            )
         if "headers" not in spec["required"]:
             spec["required"].append("headers")
-
 
     specs = list()
 
@@ -123,21 +132,29 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         spec_var = spec.copy()
 
         try:
-            spec_var["properties"]["body"] = _schema_to_property(api_schema["content"][content_type]["schema"], full_schema)
+            spec_var["properties"]["body"] = _schema_to_property(
+                api_schema["content"][content_type]["schema"], full_schema
+            )
         except KeyError as e:
             if content_type == "text/plain":
                 spec_var["properties"]["body"]["type"] = "string"
                 if "example" in api_schema["content"]:
-                    spec_var["properties"]["body"]["example"] = api_schema["content"]["example"]
+                    spec_var["properties"]["body"]["example"] = api_schema["content"][
+                        "example"
+                    ]
             else:
                 raise e
         if "headers" in api_schema:
             for header in api_schema["headers"]:
-                spec_var["properties"]["headers"]["properties"][header] = _schema_to_property(
-                    api_schema["headers"][header]["schema"], full_schema)
+                spec_var["properties"]["headers"]["properties"][
+                    header
+                ] = _schema_to_property(
+                    api_schema["headers"][header]["schema"], full_schema
+                )
                 if "description" in api_schema["headers"][header]:
                     spec_var["properties"]["headers"]["properties"][header].update(
-                        {"description": api_schema["headers"][header]["description"]})
+                        {"description": api_schema["headers"][header]["description"]}
+                    )
 
         specs.append(deepcopy(spec_var))
 
@@ -158,73 +175,81 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
         "additionalProperties": True,
         "properties": {
             "httpMethod": {
-                'const': method.upper(),
-                'description': 'the ReST method(s) type allowed '
-                               'for this API',
-                'type': 'string'
+                "const": method.upper(),
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
             },
             "headers": {
                 "type": "object",
                 "additionalProperties": True,
-                "properties": {
-                },
-                "required": list()
+                "properties": {},
+                "required": list(),
             },
             "body": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
+                "required": list(),
             },
             "pathParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
+                "required": list(),
             },
             "queryParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
-            }
+                "required": list(),
+            },
         },
-        "required": ["httpMethod"]
+        "required": ["httpMethod"],
     }
 
     if "version" in full_schema["info"]:
         schema.update({"version": full_schema["info"]["version"]})
 
     if method != "get":
-        schema["properties"]["headers"]["properties"].update({"content-type": {
-            "type": "string",
-            "enum": list()
-        }})
+        schema["properties"]["headers"]["properties"].update(
+            {"content-type": {"type": "string", "enum": list()}}
+        )
 
     def add_description():
         if "summary" in api_schema and "description" in api_schema:
-            schema["description"] = f"{api_schema['summary']}\n---\n{api_schema['description']}"
+            schema[
+                "description"
+            ] = f"{api_schema['summary']}\n---\n{api_schema['description']}"
         elif "summary" in api_schema:
-            schema["description"] = api_schema['summary']
+            schema["description"] = api_schema["summary"]
         elif "description" in api_schema:
-            schema["description"] = api_schema['description']
+            schema["description"] = api_schema["description"]
 
     add_description()
 
     required_parameter_types = {"headers"}
-    parameter_type_map = {"header": "headers", "path": "pathParameters", "query": "queryParameters"}
+    parameter_type_map = {
+        "header": "headers",
+        "path": "pathParameters",
+        "query": "queryParameters",
+    }
     if "parameters" in api_schema:
         for parameter in api_schema["parameters"]:
             parameter_type = parameter_type_map[parameter["in"]]
             parameter_name = parameter["name"]
 
-            schema["properties"][parameter_type]["properties"][parameter_name] = _schema_to_property(
-                parameter["schema"], full_schema, True if parameter_type == "queryParameters" else False
+            schema["properties"][parameter_type]["properties"][
+                parameter_name
+            ] = _schema_to_property(
+                parameter["schema"],
+                full_schema,
+                True if parameter_type == "queryParameters" else False,
             )
 
             if "description" in parameter:
-                schema["properties"][parameter_type]["properties"][parameter_name]["description"] = parameter[
-                    "description"]
+                schema["properties"][parameter_type]["properties"][parameter_name][
+                    "description"
+                ] = parameter["description"]
 
             if "required" not in schema["properties"][parameter_type]:
                 schema["properties"][parameter_type]["required"] = list()
@@ -235,12 +260,20 @@ def _convert_request(path, method, api_schema, full_schema) -> dict:
     if "requestBody" in api_schema:
         schema["properties"]["headers"]["required"].append("content-type")
         bodies = list()
-        if "required" in api_schema["requestBody"] and api_schema["requestBody"]["required"]:
+        if (
+            "required" in api_schema["requestBody"]
+            and api_schema["requestBody"]["required"]
+        ):
             required_parameter_types.add("body")
         for content_type in api_schema["requestBody"]["content"]:
-            schema["properties"]["headers"]["properties"]["content-type"]["enum"].append(content_type)
+            schema["properties"]["headers"]["properties"]["content-type"][
+                "enum"
+            ].append(content_type)
 
-            body = _schema_to_property(api_schema["requestBody"]["content"][content_type]["schema"], full_schema)
+            body = _schema_to_property(
+                api_schema["requestBody"]["content"][content_type]["schema"],
+                full_schema,
+            )
             if "additionalProperties" not in body:
                 body.update({"additionalProperties": False})
             if "required" in body and body["required"]:
@@ -292,7 +325,7 @@ class _OpenAPIResponses:
             method=self.method.method_name,
             statusCode=statusCode,
             api_schema=api_schema,
-            full_schema=self.method.path.origin.origin_schema
+            full_schema=self.method.path.origin.origin_schema,
         )
 
 
@@ -329,7 +362,7 @@ class _OpenAPIMethod:
                 path=self.path.path_name,
                 method=self.method_name,
                 api_schema=self.origin_schema,
-                full_schema=self.path.origin.origin_schema
+                full_schema=self.path.origin.origin_schema,
             )
         return self.__request
 
@@ -392,8 +425,11 @@ class OpenAPIConverter:
         return iter(self.origin_schema["paths"])
 
     def __write_schema(self, schema, path, method, response=None):
-        file_name = f"{path}-{method.upper()}-{response}.json"[1:] if response \
+        file_name = (
+            f"{path}-{method.upper()}-{response}.json"[1:]
+            if response
             else f"{path}-{method.upper()}.json"[1:]
+        )
 
         file_name = file_name.replace("/", "||")
         p = Path(self.__save_directory, file_name)

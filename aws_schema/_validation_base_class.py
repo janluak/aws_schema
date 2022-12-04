@@ -5,7 +5,11 @@ from jsonschema.exceptions import ValidationError
 
 class DataValidator(ABC):
     def __init__(
-        self, data_to_verify: dict, file: str = None, url: str = None, raw: dict = None,
+        self,
+        data_to_verify: dict,
+        file: str = None,
+        url: str = None,
+        raw: dict = None,
     ):
 
         self.__data = data_to_verify
@@ -59,9 +63,7 @@ class DataValidator(ABC):
         return str()
 
     def __insert_api_name_to_origin(self, origin):
-        resource_name = "||".join(
-            [i for i in self.api_name.split("/") if i]
-        )
+        resource_name = "||".join([i for i in self.api_name.split("/") if i])
 
         origin += resource_name
 

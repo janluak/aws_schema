@@ -11,7 +11,9 @@ def test_conversion(open_api_schema, tmp_path):
 
     converter.create_all_schemas(tmp_path)
 
-    expected = load_all(f"{dirname(realpath(__file__))}/test_data/api/openAPI_auto_creation")
+    expected = load_all(
+        f"{dirname(realpath(__file__))}/test_data/api/openAPI_auto_creation"
+    )
     actual = load_all(tmp_path)
 
     expected = {Path(k).name: v for k, v in expected.items()}

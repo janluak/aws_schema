@@ -103,7 +103,9 @@ def test_unspecified_status_code_response(response_validation_env, caplog):
     assert "no specified response schema available for statusCode 418" in caplog.text
 
 
-def test_unspecified_status_code_response_raising_error(response_validation_env, caplog):
+def test_unspecified_status_code_response_raising_error(
+    response_validation_env, caplog
+):
 
     from aws_schema.response_validation import (
         ResponseDataValidator,
@@ -123,14 +125,14 @@ def test_unspecified_status_code_response_raising_error(response_validation_env,
             response_data=response_data,
             httpMethod="POST",
             api_name="test_response_resource",
-            return_error_in_response=True
+            return_error_in_response=True,
         )
 
     assert NI.value.args[0] == {
         "statusCode": 501,
-        "body": 'no specified response schema available for statusCode 418\n'
-                'response: {\'statusCode\': 418, \'body\': "I\'m a teapot", '
-                "'headers': {'Content-Type': 'text/plain'}}",
-        "headers": {"Content-Type": "text/plain"}
+        "body": "no specified response schema available for statusCode 418\n"
+        "response: {'statusCode': 418, 'body': \"I'm a teapot\", "
+        "'headers': {'Content-Type': 'text/plain'}}",
+        "headers": {"Content-Type": "text/plain"},
     }
     assert len(caplog.messages) == 0

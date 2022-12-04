@@ -18,11 +18,11 @@ __all__ = [
 
 class SchemaValidator:
     def __init__(
-            self,
-            file: str = None,
-            url: str = None,
-            raw: dict = None,
-            custom_validator: _current_validator = _current_validator
+        self,
+        file: str = None,
+        url: str = None,
+        raw: dict = None,
+        custom_validator: _current_validator = _current_validator,
     ):
         if not any(i for i in [file, url, raw]):
             raise ValueError("one input must be specified")
@@ -74,7 +74,9 @@ class SchemaValidator:
         else:
             self.validator_without_required_check.validate(data)
 
-    def get_sub_schema(self, path_to_sub_schema: list, current_sub_schema: dict = None, depth: int = 0) -> (dict, int):
+    def get_sub_schema(
+        self, path_to_sub_schema: list, current_sub_schema: dict = None, depth: int = 0
+    ) -> (dict, int):
         if not current_sub_schema:
             current_sub_schema = self.schema
         next_element = path_to_sub_schema.__iter__()
@@ -95,7 +97,7 @@ class SchemaValidator:
                         return self.get_sub_schema(
                             path_to_sub_schema[1:],
                             current_sub_schema["patternProperties"][key],
-                            depth
+                            depth,
                         )
                 raise ValidationError(
                     f"none of the patternProperties matched: {list(current_sub_schema['patternProperties'].keys())}",
@@ -109,12 +111,16 @@ class SchemaValidator:
                 current_sub_schema = self.validator.resolver.resolve(
                     current_sub_schema["$ref"]
                 )
-                return self.get_sub_schema(path_to_sub_schema, current_sub_schema[1], depth)
+                return self.get_sub_schema(
+                    path_to_sub_schema, current_sub_schema[1], depth
+                )
 
             elif "oneOf" in current_sub_schema:
                 one_of_types = list()
                 for item in current_sub_schema["oneOf"]:
-                    schema_part, depth = self.get_sub_schema(path_to_sub_schema, item, depth)
+                    schema_part, depth = self.get_sub_schema(
+                        path_to_sub_schema, item, depth
+                    )
                     one_of_types.append(schema_part)
                 current_sub_schema = {"oneOf": one_of_types}
 
@@ -143,7 +149,8 @@ class SchemaValidator:
                     new_values[path_no] = new_values[path_no][relevant_path.pop(0)]
             try:
                 self.__base_validator(
-                    relevant_sub_schema, resolver=self.validator.resolver,
+                    relevant_sub_schema,
+                    resolver=self.validator.resolver,
                 ).validate(new_values[path_no])
             except ValidationError as VE:
                 for path in path_to_new_attribute[::-1]:

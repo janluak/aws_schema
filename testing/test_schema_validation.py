@@ -164,13 +164,7 @@ class TestGetSubSchema(TestSchemaValidation):
         sub_schema, depth = self.validator.get_sub_schema(["oneOfKey", "oneOfKey1"])
 
         self.assertEqual(
-            {
-                "oneOf": [
-                    {"type": "integer"},
-                    {"type": "string"}
-                ]
-            },
-            sub_schema
+            {"oneOf": [{"type": "integer"}, {"type": "string"}]}, sub_schema
         )
         self.assertEqual(3, depth)
 
@@ -184,6 +178,7 @@ class TestGetSubSchema(TestSchemaValidation):
             sub_schema,
         )
         self.assertEqual(2, depth)
+
 
 class TestCheckSubItemType(TestSchemaValidation):
     @classmethod
@@ -207,7 +202,9 @@ class TestCheckSubItemType(TestSchemaValidation):
         self.validator.validate_sub_part({"some_nested_dict": {"KEY1": {"subKEY2": 4}}})
 
     def test_nested_dict_unspecified_sub_type(self):
-        self.validator.validate_sub_part({"some_nested_dict": {"KEY2": {"anyKey": "any string at lowest level"}}})
+        self.validator.validate_sub_part(
+            {"some_nested_dict": {"KEY2": {"anyKey": "any string at lowest level"}}}
+        )
 
     def test_nested_dict_end_value_wrong_value_with_schema_error_path(self):
         from jsonschema import ValidationError
@@ -288,15 +285,9 @@ class TestCustomValidator(TestSchemaValidation):
         return isinstance(instance, set)
 
     schema = {
-        "properties": {
-            "some_string": {"type": "string"},
-            "some_set": {"type": "set"}
-        }
+        "properties": {"some_string": {"type": "string"}, "some_set": {"type": "set"}}
     }
-    item = {
-        "some_string": "abc",
-        "some_set": {"a", "b", "c"}
-    }
+    item = {"some_string": "abc", "some_set": {"a", "b", "c"}}
 
     def test_with_standard_validator(self):
         from aws_schema import SchemaValidator
@@ -313,10 +304,8 @@ class TestCustomValidator(TestSchemaValidation):
         custom_validator = extend(
             Draft7Validator,
             type_checker=Draft7Validator.TYPE_CHECKER.redefine_many(
-                {
-                    u"set": self.is_set
-                }
-            )
+                {"set": self.is_set}
+            ),
         )
 
         validator = SchemaValidator(raw=self.schema, custom_validator=custom_validator)
@@ -329,10 +318,8 @@ class TestCustomValidator(TestSchemaValidation):
         custom_validator = extend(
             Draft7Validator,
             type_checker=Draft7Validator.TYPE_CHECKER.redefine_many(
-                {
-                    u"set": self.is_set
-                }
-            )
+                {"set": self.is_set}
+            ),
         )
 
         validator = SchemaValidator(raw=self.schema, custom_validator=custom_validator)

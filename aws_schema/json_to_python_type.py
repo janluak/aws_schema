@@ -1,4 +1,5 @@
 from ast import literal_eval
+
 json_to_python_type_switch = {
     "array": list,
     "boolean": bool,

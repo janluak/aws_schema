@@ -46,11 +46,15 @@ def _cast_x_www_form_urlencoded(data, schema):
 
     if isinstance(data, list):
         for item_no, item in enumerate(data):
-            data[item_no] = _cast_x_www_form_urlencoded(item, schema if not converted else schema["items"])
+            data[item_no] = _cast_x_www_form_urlencoded(
+                item, schema if not converted else schema["items"]
+            )
     if isinstance(data, dict):
         for key in data:
             if "properties" in schema and key in schema["properties"]:
-                data[key] = _cast_x_www_form_urlencoded(data[key], schema["properties"][key])
+                data[key] = _cast_x_www_form_urlencoded(
+                    data[key], schema["properties"][key]
+                )
             elif "items" in schema.get(key, dict()):
                 data[key] = _cast_x_www_form_urlencoded(data[key], schema[key]["items"])
 
@@ -64,5 +68,6 @@ def cast_parameter(data, schema):
         _cast_query_parameter(data, schema)
     if _get_content_type(data) == "application/x-www-form-urlencoded":
         _cast_x_www_form_urlencoded(
-            data["body"], schema["properties"].get("body", dict()).get("properties", dict())
+            data["body"],
+            schema["properties"].get("body", dict()).get("properties", dict()),
         )

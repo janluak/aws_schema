@@ -14,7 +14,9 @@ def delete_keys_in_nested_dict(nested: (dict, list), dict_keys_to_delete: list):
     """
 
     if not isinstance(dict_keys_to_delete, list):
-        raise TypeError(f"dict_keys_to_delete must be a list, given {dict_keys_to_delete}")
+        raise TypeError(
+            f"dict_keys_to_delete must be a list, given {dict_keys_to_delete}"
+        )
 
     if isinstance(nested, list):
         for i in range(len(nested)):

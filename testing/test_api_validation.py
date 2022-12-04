@@ -178,11 +178,11 @@ class TestAPIValidation(TestCase):
             {
                 "statusCode": 400,
                 "body": "123 is not of type 'string'\n\n"
-                "Failed validating 'type' in "
-                "schema['properties']['body']['properties']['body_key1']:\n"
-                "    {'description': 'containing only a string', 'type': 'string'}\n\n"
-                "On instance['body']['body_key1']:\n"
-                "    123",
+                        "Failed validating 'type' in "
+                        "schema['properties']['body']['properties']['body_key1']:\n"
+                        "    {'description': 'containing only a string', 'type': 'string'}\n\n"
+                        "On instance['body']['body_key1']:\n"
+                        "    123",
                 "headers": {"Content-Type": "text/plain"},
             },
             TE.exception.args[0],
@@ -253,13 +253,12 @@ class TestAPIValidation(TestCase):
         )
 
         api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
-        api_data = {
-            "httpMethod": "POST",
-            "body": {"key_1": "some_string"}
-        }
+        api_data = {"httpMethod": "POST", "body": {"key_1": "some_string"}}
 
         APIDataValidator(
-            file=api_schema_directory, api_data=api_data, api_name="/test_request_resource/specific_resource"
+            file=api_schema_directory,
+            api_data=api_data,
+            api_name="/test_request_resource/specific_resource",
         )
 
     def test_url_nested_path_variables(self):
@@ -274,16 +273,18 @@ class TestAPIValidation(TestCase):
             "headers": {"content-type": "application/json"},
             "pathParameters": {
                 "path_level1": "path_value1",
-                "path_level2": "path_value"
+                "path_level2": "path_value",
             },
             "multiValueQueryStringParameters": {
                 "key1": ["some string"],
-                "key2": ["another string"]
-            }
+                "key2": ["another string"],
+            },
         }
 
         APIDataValidator(
-            file=api_schema_directory, api_data=api_data, api_name="/test_request_resource/{path_level1}/{path_level2}"
+            file=api_schema_directory,
+            api_data=api_data,
+            api_name="/test_request_resource/{path_level1}/{path_level2}",
         )
 
     def test_basic_with_parameter_casting(self):
@@ -291,9 +292,7 @@ class TestAPIValidation(TestCase):
             APIDataValidator,
         )
 
-        api_schema_file = (
-            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
-        )
+        api_schema_file = f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
@@ -306,9 +305,7 @@ class TestAPIValidation(TestCase):
             APIDataValidator,
         )
 
-        api_schema_file = (
-            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
-        )
+        api_schema_file = f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
@@ -341,9 +338,7 @@ class TestAPIValidation(TestCase):
             APIDataValidator,
         )
 
-        api_schema_file = (
-            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
-        )
+        api_schema_file = f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
@@ -372,10 +367,12 @@ class TestAPIValidation(TestCase):
         )
 
         api_schema_file = (
-            f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_x_www_form_urlencoded_params-POST.json"
+                str(dirname(realpath(__file__))) +
+                "/test_data/api/test_request_resource_parsing_x_www_form_urlencoded_params-POST.json"
         )
         api_data = load_json_file(
-            f"{dirname(realpath(__file__))}/test_data/api/request_resource_for_parsing_x_www_form_urlencoded_params.json"
+            str(dirname(realpath(__file__))) +
+            "/test_data/api/request_resource_for_parsing_x_www_form_urlencoded_params.json"
         )
         parsed_data = APIDataValidator(
             file=api_schema_file, api_data=api_data, api_name="test_request_resource"
@@ -386,5 +383,5 @@ class TestAPIValidation(TestCase):
             "type_list_of_strings_key": [["abc", "0123"]],
             "type_object_key": [{"sub_key3.1": "02", "sub_key3.2": 2}],
             "type_list_of_numbers_key": [[2.34, 45.6]],
-            "double_query_key": [2, 4]
+            "double_query_key": [2, 4],
         }

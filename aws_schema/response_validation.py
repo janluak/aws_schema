@@ -15,7 +15,7 @@ class ResponseDataValidator(DataValidator):
         file: str = None,
         url: str = None,
         raw: dict = None,
-        return_error_in_response: bool = False
+        return_error_in_response: bool = False,
     ):
         self.__httpMethod = httpMethod
         self.__api_name = api_name
@@ -23,7 +23,8 @@ class ResponseDataValidator(DataValidator):
             super().__init__(response_data, file, url, raw)
             self.verify(return_error_in_response)
         except NotImplementedError:
-            exception_text = f"no specified response schema available for statusCode {self.statusCode}\nresponse: {response_data}"
+            exception_text = f"no specified response schema available for statusCode {self.statusCode}\n" \
+                             f"response: {response_data}"
             if return_error_in_response:
                 raise NotImplementedError(
                     {

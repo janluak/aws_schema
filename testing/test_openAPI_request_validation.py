@@ -9,12 +9,10 @@ def test_request_translation_get():
             {
                 "in": "query",
                 "name": "string_value",
-                "schema": {
-                    "type": "string"
-                },
-                "required": True
+                "schema": {"type": "string"},
+                "required": True,
             }
-        ]
+        ],
     }
 
     json_schema_request = {
@@ -24,56 +22,49 @@ def test_request_translation_get():
         "type": "object",
         "additionalProperties": True,
         "properties": {
-            'httpMethod': {
-                'const': 'GET',
-                'description': 'the ReST method(s) type allowed '
-                               'for this API',
-                'type': 'string'
+            "httpMethod": {
+                "const": "GET",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
             },
             "headers": {
                 "type": "object",
                 "additionalProperties": True,
-                "properties": {
-                },
+                "properties": {},
                 "required": list(),
             },
             "body": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
+                "required": list(),
             },
-            'pathParameters': {
-                'additionalProperties': False,
-                'properties': {},
-                'required': [],
-                'type': 'object'
+            "pathParameters": {
+                "additionalProperties": False,
+                "properties": {},
+                "required": [],
+                "type": "object",
             },
             "queryParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": {
-                    "string_value": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
+                    "string_value": {"type": "array", "items": {"type": "string"}}
                 },
-                "required": [
-                    "string_value"
-                ]
-            }
+                "required": ["string_value"],
+            },
         },
-        "required": [
-            "headers",
-            "httpMethod",
-            "queryParameters"
-        ]
+        "required": ["headers", "httpMethod", "queryParameters"],
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path, open_api_method, open_api_request, {"info": dict()}
+        )
+        == json_schema_request
+    )
 
 
 def test_request_translation_post():
@@ -87,44 +78,30 @@ def test_request_translation_post():
             {
                 "in": "path",
                 "name": "path_level1",
-                "schema": {
-                    "type": "string"
-                },
+                "schema": {"type": "string"},
                 "required": True,
-                "description": "parameter description"
+                "description": "parameter description",
             },
             {
                 "in": "path",
                 "name": "path_level2",
                 "required": True,
                 "description": "parameter description",
-                "schema": {
-                    "type": "string"
-                }
+                "schema": {"type": "string"},
             },
             {
                 "in": "query",
                 "name": "key1",
-                "schema": {
-                    "type": "string"
-                },
-                "required": True
+                "schema": {"type": "string"},
+                "required": True,
             },
             {
                 "in": "query",
                 "name": "key2",
                 "description": "some description",
-                "schema": {
-                    "type": "integer"
-                }
+                "schema": {"type": "integer"},
             },
-            {
-                "in": "header",
-                "name": "isBase64Encoded",
-                "schema": {
-                    "type": "boolean"
-                }
-            }
+            {"in": "header", "name": "isBase64Encoded", "schema": {"type": "boolean"}},
         ],
         "requestBody": {
             "required": True,
@@ -133,21 +110,17 @@ def test_request_translation_post():
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "body_key1": {
-                                "type": "string"
-                            },
+                            "body_key1": {"type": "string"},
                             "body_key2": {
                                 "type": "object",
-                                "description": "some description"
-                            }
+                                "description": "some description",
+                            },
                         },
-                        "required": [
-                            "body_key1"
-                        ]
+                        "required": ["body_key1"],
                     }
                 }
-            }
-        }
+            },
+        },
     }
 
     json_schema_request = {
@@ -157,43 +130,28 @@ def test_request_translation_post():
         "type": "object",
         "additionalProperties": True,
         "properties": {
-            'httpMethod': {
-                'const': 'POST',
-                'description': 'the ReST method(s) type allowed '
-                               'for this API',
-                'type': 'string'
+            "httpMethod": {
+                "const": "POST",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
             },
             "headers": {
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "content-type": {
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    "isBase64Encoded": {
-                        "type": "boolean"
-                    }
+                    "content-type": {"type": "string", "enum": ["application/json"]},
+                    "isBase64Encoded": {"type": "boolean"},
                 },
-                "required": ["content-type"]
+                "required": ["content-type"],
             },
             "body": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": {
-                    "body_key1": {
-                        "type": "string"
-                    },
-                    "body_key2": {
-                        "type": "object",
-                        "description": "some description"
-                    }
+                    "body_key1": {"type": "string"},
+                    "body_key2": {"type": "object", "description": "some description"},
                 },
-                "required": [
-                    "body_key1"
-                ]
+                "required": ["body_key1"],
             },
             "pathParameters": {
                 "type": "object",
@@ -201,48 +159,46 @@ def test_request_translation_post():
                 "properties": {
                     "path_level1": {
                         "type": "string",
-                        "description": "parameter description"
+                        "description": "parameter description",
                     },
                     "path_level2": {
                         "type": "string",
-                        "description": "parameter description"
-                    }
+                        "description": "parameter description",
+                    },
                 },
-                "required": [
-                    "path_level1",
-                    "path_level2"
-                ]
+                "required": ["path_level1", "path_level2"],
             },
             "queryParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": {
-                    "key1": {
-                        "items": {"type": "string"},
-                        "type": "array"
-                    },
+                    "key1": {"items": {"type": "string"}, "type": "array"},
                     "key2": {
                         "items": {"type": "integer"},
                         "type": "array",
-                        "description": "some description"
-                    }
+                        "description": "some description",
+                    },
                 },
-                "required": [
-                    "key1"
-                ]
-            }
+                "required": ["key1"],
+            },
         },
         "required": [
             "body",
             "headers",
             "httpMethod",
             "pathParameters",
-            "queryParameters"
-        ]
+            "queryParameters",
+        ],
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path, open_api_method, open_api_request, {"info": dict()}
+        )
+        == json_schema_request
+    )
 
 
 def test_request_translation_post_no_requires():
@@ -256,42 +212,24 @@ def test_request_translation_post_no_requires():
             {
                 "in": "path",
                 "name": "path_level1",
-                "schema": {
-                    "type": "string"
-                },
+                "schema": {"type": "string"},
                 "required": True,
-                "description": "parameter description"
+                "description": "parameter description",
             },
             {
                 "in": "path",
                 "name": "path_level2",
                 "description": "parameter description",
-                "schema": {
-                    "type": "string"
-                }
+                "schema": {"type": "string"},
             },
-            {
-                "in": "query",
-                "name": "key1",
-                "schema": {
-                    "type": "string"
-                }
-            },
+            {"in": "query", "name": "key1", "schema": {"type": "string"}},
             {
                 "in": "query",
                 "name": "key2",
                 "description": "some description",
-                "schema": {
-                    "type": "integer"
-                }
+                "schema": {"type": "integer"},
             },
-            {
-                "in": "header",
-                "name": "isBase64Encoded",
-                "schema": {
-                    "type": "boolean"
-                }
-            }
+            {"in": "header", "name": "isBase64Encoded", "schema": {"type": "boolean"}},
         ],
         "requestBody": {
             "content": {
@@ -299,18 +237,16 @@ def test_request_translation_post_no_requires():
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "body_key1": {
-                                "type": "string"
-                            },
+                            "body_key1": {"type": "string"},
                             "body_key2": {
                                 "type": "object",
-                                "description": "some description"
-                            }
-                        }
+                                "description": "some description",
+                            },
+                        },
                     }
                 }
             }
-        }
+        },
     }
 
     json_schema_request = {
@@ -321,39 +257,26 @@ def test_request_translation_post_no_requires():
         "additionalProperties": True,
         "properties": {
             "httpMethod": {
-                'const': 'POST',
-                'description': 'the ReST method(s) type allowed '
-                               'for this API',
-                'type': 'string'
+                "const": "POST",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
             },
             "headers": {
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "content-type": {
-                        "type": "string",
-                        "enum": [
-                            "application/json"
-                        ]
-                    },
-                    "isBase64Encoded": {
-                        "type": "boolean"
-                    }
+                    "content-type": {"type": "string", "enum": ["application/json"]},
+                    "isBase64Encoded": {"type": "boolean"},
                 },
-                "required": ["content-type"]
+                "required": ["content-type"],
             },
             "body": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": {
-                    "body_key1": {
-                        "type": "string"
-                    },
-                    "body_key2": {
-                        "type": "object",
-                        "description": "some description"
-                    }
-                }
+                    "body_key1": {"type": "string"},
+                    "body_key2": {"type": "object", "description": "some description"},
+                },
             },
             "pathParameters": {
                 "type": "object",
@@ -361,43 +284,44 @@ def test_request_translation_post_no_requires():
                 "properties": {
                     "path_level1": {
                         "type": "string",
-                        "description": "parameter description"
+                        "description": "parameter description",
                     },
                     "path_level2": {
                         "type": "string",
-                        "description": "parameter description"
-                    }
+                        "description": "parameter description",
+                    },
                 },
-                "required": [
-                    "path_level1"
-                ]
+                "required": ["path_level1"],
             },
             "queryParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": {
-                    "key1": {
-                        "items": {"type": "string"},
-                        "type": "array"
-                    },
+                    "key1": {"items": {"type": "string"}, "type": "array"},
                     "key2": {
                         "items": {"type": "integer"},
                         "type": "array",
-                        "description": "some description"
-                    }
+                        "description": "some description",
+                    },
                 },
-                "required": list()
-            }
+                "required": list(),
+            },
         },
         "required": [
             "headers",
             "httpMethod",
             "pathParameters",
-        ]
+        ],
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path, open_api_method, open_api_request, {"info": dict()}
+        )
+        == json_schema_request
+    )
 
 
 def test_request_translation_no_body_no_query():
@@ -411,27 +335,17 @@ def test_request_translation_no_body_no_query():
             {
                 "in": "path",
                 "name": "path_level1",
-                "schema": {
-                    "type": "string"
-                },
+                "schema": {"type": "string"},
                 "required": True,
-                "description": "parameter description"
+                "description": "parameter description",
             },
             {
                 "in": "path",
                 "name": "path_level2",
                 "description": "parameter description",
-                "schema": {
-                    "type": "string"
-                }
+                "schema": {"type": "string"},
             },
-            {
-                "in": "header",
-                "name": "isBase64Encoded",
-                "schema": {
-                    "type": "boolean"
-                }
-            }
+            {"in": "header", "name": "isBase64Encoded", "schema": {"type": "boolean"}},
         ],
     }
 
@@ -442,31 +356,25 @@ def test_request_translation_no_body_no_query():
         "type": "object",
         "additionalProperties": True,
         "properties": {
-            'httpMethod': {
-                'const': 'POST',
-                'description': 'the ReST method(s) type allowed '
-                               'for this API',
-                'type': 'string'
+            "httpMethod": {
+                "const": "POST",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
             },
             "headers": {
                 "type": "object",
                 "additionalProperties": True,
                 "properties": {
-                    "content-type": {
-                        "type": "string",
-                        "enum": list()
-                    },
-                    "isBase64Encoded": {
-                        "type": "boolean"
-                    }
+                    "content-type": {"type": "string", "enum": list()},
+                    "isBase64Encoded": {"type": "boolean"},
                 },
-                "required": []
+                "required": [],
             },
             "body": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
+                "required": list(),
             },
             "pathParameters": {
                 "type": "object",
@@ -474,33 +382,37 @@ def test_request_translation_no_body_no_query():
                 "properties": {
                     "path_level1": {
                         "type": "string",
-                        "description": "parameter description"
+                        "description": "parameter description",
                     },
                     "path_level2": {
                         "type": "string",
-                        "description": "parameter description"
-                    }
+                        "description": "parameter description",
+                    },
                 },
-                "required": [
-                    "path_level1"
-                ]
+                "required": ["path_level1"],
             },
             "queryParameters": {
                 "type": "object",
                 "additionalProperties": False,
                 "properties": dict(),
-                "required": list()
-            }
+                "required": list(),
+            },
         },
         "required": [
             "headers",
             "httpMethod",
             "pathParameters",
-        ]
+        ],
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(open_api_path, open_api_method, open_api_request, {"info": dict()}) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path, open_api_method, open_api_request, {"info": dict()}
+        )
+        == json_schema_request
+    )
 
 
 def test_request_translation_with_reference():
@@ -518,17 +430,17 @@ def test_request_translation_with_reference():
                         "properties": {
                             "body_key1": {
                                 "type": "string",
-                                "description": "containing only a string"
+                                "description": "containing only a string",
                             },
                             "body_key2": {
-                                "$ref": '#/components/schemas/example_object'
-                            }
+                                "$ref": "#/components/schemas/example_object"
+                            },
                         },
-                        "required": ["body_key2"]
+                        "required": ["body_key2"],
                     }
                 }
             }
-        }
+        },
     }
 
     open_api_full_schema_component = {
@@ -540,70 +452,83 @@ def test_request_translation_with_reference():
                     "properties": {
                         "example_key1": {
                             "type": "string",
-                            "description": "explaining example_key1"
+                            "description": "explaining example_key1",
                         },
-                        "example_key2": {
-                            "type": "integer"
-                        }
-                    }
+                        "example_key2": {"type": "integer"},
+                    },
                 }
             }
-        }
+        },
     }
 
     json_schema_request = {
-        '$schema': 'http://json-schema.org/draft-07/schema#',
-        'additionalProperties': True,
-        'description': 'Test API\n---\nsome description',
-        'properties': {
-            'body': {
-                'additionalProperties': False,
-                'properties': {
-                    'body_key1': {
-                        'description': 'containing '
-                                       'only a '
-                                       'string',
-                        'type': 'string'
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": True,
+        "description": "Test API\n---\nsome description",
+        "properties": {
+            "body": {
+                "additionalProperties": False,
+                "properties": {
+                    "body_key1": {
+                        "description": "containing " "only a " "string",
+                        "type": "string",
                     },
-                    'body_key2': {
-                        'properties': {
-                            'example_key1': {
-                                'description': 'explaining '
-                                               'example_key1',
-                                'type': 'string'},
-                            'example_key2': {'type': 'integer'}},
-                        'type': 'object'}},
-                'required': ['body_key2'],
-                'type': 'object'},
-            'headers': {
-                'additionalProperties': True,
-                'properties': {
-                    'content-type': {
-                        'enum': ['application/json'],
-                        'type': 'string'}},
-                'required': ['content-type'],
-                'type': 'object'},
-            'httpMethod': {'const': 'PUT',
-                           'description': 'the ReST method(s) type allowed '
-                                          'for this API',
-                           'type': 'string'},
-            'pathParameters': {'additionalProperties': False,
-                               'properties': dict(),
-                               'required': list(),
-                               'type': 'object'},
-            'queryParameters': {'additionalProperties': False,
-                                'properties': dict(),
-                                'required': list(),
-                                'type': 'object'}},
-        'required': ['body', 'headers', 'httpMethod'],
-        'title': 'test_path_with_ref-PUT',
-        'type': 'object'
+                    "body_key2": {
+                        "properties": {
+                            "example_key1": {
+                                "description": "explaining " "example_key1",
+                                "type": "string",
+                            },
+                            "example_key2": {"type": "integer"},
+                        },
+                        "type": "object",
+                    },
+                },
+                "required": ["body_key2"],
+                "type": "object",
+            },
+            "headers": {
+                "additionalProperties": True,
+                "properties": {
+                    "content-type": {"enum": ["application/json"], "type": "string"}
+                },
+                "required": ["content-type"],
+                "type": "object",
+            },
+            "httpMethod": {
+                "const": "PUT",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
+            },
+            "pathParameters": {
+                "additionalProperties": False,
+                "properties": dict(),
+                "required": list(),
+                "type": "object",
+            },
+            "queryParameters": {
+                "additionalProperties": False,
+                "properties": dict(),
+                "required": list(),
+                "type": "object",
+            },
+        },
+        "required": ["body", "headers", "httpMethod"],
+        "title": "test_path_with_ref-PUT",
+        "type": "object",
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(
-        open_api_path, open_api_method, open_api_request, open_api_full_schema_component
-    ) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path,
+            open_api_method,
+            open_api_request,
+            open_api_full_schema_component,
+        )
+        == json_schema_request
+    )
 
 
 def test_request_translation_with_unspecified_body():
@@ -616,53 +541,59 @@ def test_request_translation_with_unspecified_body():
         "requestBody": {
             "content": {
                 "application/json": {
-                    "schema": {
-                        "type": "object",
-                        "additionalProperties": True
-                    }
+                    "schema": {"type": "object", "additionalProperties": True}
                 }
             }
-        }
+        },
     }
 
-    open_api_full_schema_component = {
-        "info": dict()
-    }
+    open_api_full_schema_component = {"info": dict()}
 
     json_schema_request = {
-        '$schema': 'http://json-schema.org/draft-07/schema#',
-        'additionalProperties': True,
-        'description': 'Test API\n---\nsome description',
-        'properties': {
-            'body': {
-                'additionalProperties': True,
-                'type': 'object'},
-            'headers': {
-                'additionalProperties': True,
-                'properties': {
-                    'content-type': {
-                        'enum': ['application/json'],
-                        'type': 'string'}},
-                'required': ['content-type'],
-                'type': 'object'},
-            'httpMethod': {'const': 'POST',
-                           'description': 'the ReST method(s) type allowed '
-                                          'for this API',
-                           'type': 'string'},
-            'pathParameters': {'additionalProperties': False,
-                               'properties': dict(),
-                               'required': list(),
-                               'type': 'object'},
-            'queryParameters': {'additionalProperties': False,
-                                'properties': dict(),
-                                'required': list(),
-                                'type': 'object'}},
-        'required': ['headers', 'httpMethod'],
-        'title': 'test_path_with_unspecified_body-POST',
-        'type': 'object'
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": True,
+        "description": "Test API\n---\nsome description",
+        "properties": {
+            "body": {"additionalProperties": True, "type": "object"},
+            "headers": {
+                "additionalProperties": True,
+                "properties": {
+                    "content-type": {"enum": ["application/json"], "type": "string"}
+                },
+                "required": ["content-type"],
+                "type": "object",
+            },
+            "httpMethod": {
+                "const": "POST",
+                "description": "the ReST method(s) type allowed " "for this API",
+                "type": "string",
+            },
+            "pathParameters": {
+                "additionalProperties": False,
+                "properties": dict(),
+                "required": list(),
+                "type": "object",
+            },
+            "queryParameters": {
+                "additionalProperties": False,
+                "properties": dict(),
+                "required": list(),
+                "type": "object",
+            },
+        },
+        "required": ["headers", "httpMethod"],
+        "title": "test_path_with_unspecified_body-POST",
+        "type": "object",
     }
 
     from aws_schema.openAPI_converter import _convert_request
-    assert _convert_request(
-        open_api_path, open_api_method, open_api_request, open_api_full_schema_component
-    ) == json_schema_request
+
+    assert (
+        _convert_request(
+            open_api_path,
+            open_api_method,
+            open_api_request,
+            open_api_full_schema_component,
+        )
+        == json_schema_request
+    )
