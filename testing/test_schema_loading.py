@@ -1,6 +1,7 @@
 from unittest import TestCase
 from os.path import dirname, realpath
-from fil_io.json import load_single
+
+from testing import load_json_file
 
 
 class TestSchemaLoadingFromFile(TestCase):
@@ -13,7 +14,7 @@ class TestSchemaLoadingFromFile(TestCase):
             f"{dirname(realpath(__file__))}/test_data/database/schema_basic.json"
         )
 
-        expected_schema = load_single(schema_file)
+        expected_schema = load_json_file(schema_file)
 
         validator = SchemaValidator(file=schema_file)
         loaded_schema = validator.schema
@@ -28,7 +29,7 @@ class TestSchemaLoadingFromFile(TestCase):
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested.json"
         )
 
-        expected_schema = load_single(base_schema_file)
+        expected_schema = load_json_file(base_schema_file)
 
         validator = SchemaValidator(file=base_schema_file)
         loaded_schema = validator.schema

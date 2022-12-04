@@ -1,7 +1,8 @@
 from unittest import TestCase
 from os.path import dirname, realpath
-from fil_io.json import load_single
 from jsonschema.exceptions import ValidationError
+
+from testing import load_json_file
 
 
 class TestSchemaValidation(TestCase):
@@ -12,7 +13,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
     def test_basic_schema(self):
         from aws_schema import SchemaValidator
 
-        test_item = load_single(
+        test_item = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
         )
 
@@ -26,7 +27,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
     def test_basic_schema_wrong_data(self):
         from aws_schema import SchemaValidator
 
-        test_item = load_single(
+        test_item = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic_wrong.json"
         )
 
@@ -50,7 +51,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
         try:
             from aws_schema import SchemaValidator
 
-            test_item = load_single(
+            test_item = load_json_file(
                 f"{dirname(realpath(__file__))}/test_data/database/item_nested.json"
             )
 
@@ -70,7 +71,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
     def test_basic_schema_without_required(self):
         from aws_schema import SchemaValidator
 
-        test_item = load_single(
+        test_item = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
         )
 
@@ -86,7 +87,7 @@ class TestFullSchemaValidation(TestSchemaValidation):
     def test_basic_schema_without_required_nested(self):
         from aws_schema import SchemaValidator
 
-        test_item = load_single(
+        test_item = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/item_basic.json"
         )
 
@@ -106,7 +107,7 @@ class TestGetSubSchema(TestSchemaValidation):
         cls.raw_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested.json"
         )
-        cls.raw_schema = load_single(cls.raw_schema_file)
+        cls.raw_schema = load_json_file(cls.raw_schema_file)
 
         from aws_schema import SchemaValidator
 
@@ -142,7 +143,7 @@ class TestGetSubSchema(TestSchemaValidation):
             ["some_nested_dict", "KEY1", "subKEY3"]
         )
 
-        nested_schema = load_single(
+        nested_schema = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested_definitions.json"
         )
         self.assertEqual(
@@ -153,7 +154,7 @@ class TestGetSubSchema(TestSchemaValidation):
     def test_get_referenced_sub_schema_from_array(self):
         sub_schema, depth = self.validator.get_sub_schema(["nested_array", "KEY1"])
 
-        nested_schema = load_single(
+        nested_schema = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested_array_child.json"
         )
         self.assertEqual(nested_schema["properties"]["KEY1"], sub_schema)
@@ -190,7 +191,7 @@ class TestCheckSubItemType(TestSchemaValidation):
         cls.raw_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/database/schema_nested.json"
         )
-        cls.raw_schema = load_single(cls.raw_schema_file)
+        cls.raw_schema = load_json_file(cls.raw_schema_file)
 
         from aws_schema import SchemaValidator
 

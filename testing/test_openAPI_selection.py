@@ -1,7 +1,8 @@
 from os.path import dirname, realpath
 import yaml
 from pytest import fixture, mark
-from fil_io.json import load_single as json_load_single
+
+from testing import load_json_file
 
 
 @fixture
@@ -12,7 +13,7 @@ def open_api_schema():
 
 @fixture
 def event():
-    return json_load_single(f"{dirname(realpath(__file__))}/test_data/api/request_aws_http_put_event.json")
+    return load_json_file(f"{dirname(realpath(__file__))}/test_data/api/request_aws_http_put_event.json")
 
 
 def test_converter(open_api_schema):
@@ -85,7 +86,7 @@ def test_converter_path_method_response(open_api_schema):
 
 
 def test_select_request(open_api_schema, event):
-    expected_request_schema = json_load_single(
+    expected_request_schema = load_json_file(
         f"{dirname(realpath(__file__))}" + "/test_data/api/test_request_resource||{path_level1}||{path_level2}-PUT.json"
     )
 
@@ -96,7 +97,7 @@ def test_select_request(open_api_schema, event):
 
 
 def test_response201(open_api_schema):
-    expected_response_schema = json_load_single(
+    expected_response_schema = load_json_file(
         f"{dirname(realpath(__file__))}/test_data/response/test_response_resource-PUT-201.json"
     )
 
@@ -109,7 +110,7 @@ def test_response201(open_api_schema):
 
 
 def test_response404(open_api_schema):
-    expected_response_schema = json_load_single(
+    expected_response_schema = load_json_file(
         f"{dirname(realpath(__file__))}/test_data/response/test_response_resource-PUT-404.json"
     )
 
@@ -122,7 +123,7 @@ def test_response404(open_api_schema):
 
 
 def test_response_from_string_statusCode(open_api_schema):
-    expected_response_schema = json_load_single(
+    expected_response_schema = load_json_file(
         f"{dirname(realpath(__file__))}/test_data/response/test_response_resource-PUT-404.json"
     )
 
@@ -135,7 +136,7 @@ def test_response_from_string_statusCode(open_api_schema):
 
 
 def test_request_with_reference(open_api_schema):
-    expected_request_schema = json_load_single(
+    expected_request_schema = load_json_file(
         f"{dirname(realpath(__file__))}" +
         "/test_data/api/test_path_with_ref-POST.json"
     )
@@ -148,7 +149,7 @@ def test_request_with_reference(open_api_schema):
 
 
 def test_response_with_reference(open_api_schema):
-    expected_request_schema = json_load_single(
+    expected_request_schema = load_json_file(
         f"{dirname(realpath(__file__))}" +
         "/test_data/api/openAPI_auto_creation/test_path_with_ref-POST-200.json"
     )

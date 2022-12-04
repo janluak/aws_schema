@@ -1,7 +1,8 @@
 from unittest import TestCase
 from os.path import dirname, realpath
-from fil_io.json import load_single
 from os import getcwd, chdir
+
+from testing import load_json_file
 
 
 class TestAPIValidation(TestCase):
@@ -13,7 +14,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
         APIDataValidator(
@@ -26,7 +27,7 @@ class TestAPIValidation(TestCase):
         )
 
         api_schema_file = f"{dirname(realpath(__file__))}/test_data/api/test_request_resource-POST.json"
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
         APIDataValidator(
@@ -39,7 +40,7 @@ class TestAPIValidation(TestCase):
         )
 
         api_schema_directory = f"{dirname(realpath(__file__))}/test_data/api/"
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
 
@@ -62,7 +63,7 @@ class TestAPIValidation(TestCase):
             chdir(dirname(realpath(__file__)))
 
             api_schema_file = "./test_data/api/test_request_resource.json"
-            api_data = load_single("./test_data/api/request_basic.json")
+            api_data = load_json_file("./test_data/api/request_basic.json")
 
             APIDataValidator(
                 file=api_schema_file,
@@ -81,7 +82,7 @@ class TestAPIValidation(TestCase):
         try:
             chdir(dirname(realpath(__file__)))
             api_schema_directory = "./test_data/api/"
-            api_data = load_single("./test_data/api/request_basic.json")
+            api_data = load_json_file("./test_data/api/request_basic.json")
 
             def api_basic():
                 APIDataValidator(
@@ -102,7 +103,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
         api_data["httpMethod"] = "WRONG"
@@ -131,7 +132,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
         api_data["body"] = None
@@ -160,7 +161,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
 
@@ -195,7 +196,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic.json"
         )
         api_data.pop("pathParameters")
@@ -224,7 +225,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_aws_http_event.json"
         )
         APIDataValidator(
@@ -293,7 +294,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
         APIDataValidator(
@@ -308,7 +309,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
 
@@ -343,7 +344,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_params.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_basic_for_parsing_params.json"
         )
 
@@ -373,7 +374,7 @@ class TestAPIValidation(TestCase):
         api_schema_file = (
             f"{dirname(realpath(__file__))}/test_data/api/test_request_resource_parsing_x_www_form_urlencoded_params-POST.json"
         )
-        api_data = load_single(
+        api_data = load_json_file(
             f"{dirname(realpath(__file__))}/test_data/api/request_resource_for_parsing_x_www_form_urlencoded_params.json"
         )
         parsed_data = APIDataValidator(

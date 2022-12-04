@@ -1,7 +1,8 @@
 from .test_openAPI_selection import open_api_schema
 from pathlib import Path
 from os.path import dirname, realpath
-from fil_io.json import load_all
+
+from testing import load_all
 
 
 def test_conversion(open_api_schema, tmp_path):
