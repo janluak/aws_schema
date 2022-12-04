@@ -78,7 +78,8 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
                 "type": "number"
             },
             "headers": {
-                "type": "object"
+                "type": "object",
+                "additionalProperties": True
             }
         },
         "required": [
@@ -90,8 +91,8 @@ def _convert_response(path, method, statusCode, api_schema, full_schema) -> dict
         spec["properties"].update({"body": dict()})
         spec["properties"]["headers"].update(
             {
-                "properties": {
-                    "content-type": {
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [i for i in api_schema["content"].keys() if i != "example"]
                     }

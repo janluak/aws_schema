@@ -11,8 +11,9 @@
         },
         "headers": {
             "type": "object",
-            "properties": {
-                "content-type": {
+            "additionalProperties": true,
+            "patternProperties": {
+                "[cC]ontent-[tT]ype": {
                     "type": "string",
                     "enum": [
                         "text/plain"

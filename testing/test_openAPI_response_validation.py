@@ -32,8 +32,9 @@ def test_response_translation_text_plain():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    "content-type": {
+                "additionalProperties": True,
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [
                             "text/plain"
@@ -116,8 +117,10 @@ def test_response_translation_application_json():
                                                    'properties': {'sub_key': {'type': 'string'}},
                                                    'type': 'object'}},
                                 'type': 'object'},
-                       'headers': {'properties': {'content-type': {'enum': ['application/json'],
-                                                                   'type': 'string'}},
+                       'headers': {"additionalProperties": True,
+                                   "patternProperties": {
+                                       "[cC]ontent-[tT]ype": {'enum': ['application/json'],
+                                                              'type': 'string'}},
                                    'type': 'object'},
                        'statusCode': {'type': 'number'}},
         'required': ['statusCode', 'headers', "body"],
@@ -163,9 +166,11 @@ def test_response_translation_multiple_content_types():
         'oneOf': [{'additionalProperties': False,
                    'properties': {'body': {'examples': ['not found'],
                                            'type': 'string'},
-                                  'headers': {'properties': {'content-type': {'enum': ['text/plain',
-                                                                                       'application/json'],
-                                                                              'type': 'string'}},
+                                  'headers': {"additionalProperties": True,
+                                              "patternProperties": {
+                                                  "[cC]ontent-[tT]ype": {'enum': ['text/plain',
+                                                                                  'application/json'],
+                                                                         'type': 'string'}},
                                               'type': 'object'},
                                   'statusCode': {'type': 'number'}},
                    'required': ['statusCode', 'headers', "body"],
@@ -173,9 +178,11 @@ def test_response_translation_multiple_content_types():
                   {'additionalProperties': False,
                    'properties': {'body': {'properties': {'key1': {'type': 'string'}},
                                            'type': 'object'},
-                                  'headers': {'properties': {'content-type': {'enum': ['text/plain',
-                                                                                       'application/json'],
-                                                                              'type': 'string'}},
+                                  'headers': {"additionalProperties": True,
+                                              "patternProperties": {
+                                                  "[cC]ontent-[tT]ype": {'enum': ['text/plain',
+                                                                                  'application/json'],
+                                                                         'type': 'string'}},
                                               'type': 'object'},
                                   'statusCode': {'type': 'number'}},
                    'required': ['statusCode', 'headers', "body"],
@@ -236,13 +243,16 @@ def test_response_translation_additional_headers():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    "content-type": {
+                "additionalProperties": True,
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [
                             "text/plain"
                         ]
-                    },
+                    }
+                },
+                "properties": {
                     "header1": {
                         "type": "integer",
                         "description": "some description"
@@ -324,8 +334,9 @@ def test_response_translation_array():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    "content-type": {
+                "additionalProperties": True,
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [
                             "application/json"
@@ -415,8 +426,9 @@ def test_response_translation_with_reference():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    'content-type': {
+                "additionalProperties": True,
+                "patternProperties": {
+                    '[cC]ontent-[tT]ype': {
                         'enum': ['application/json'],
                         'type': 'string'
                     }
@@ -510,8 +522,9 @@ def test_response_translation_with_reference_in_items():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    'content-type': {
+                "additionalProperties": True,
+                "patternProperties": {
+                    '[cC]ontent-[tT]ype': {
                         'enum': ['application/json'],
                         'type': 'string'
                     }
@@ -549,6 +562,7 @@ def test_response_translation_no_body():
                 "type": "number"
             },
             "headers": {
+                "additionalProperties": True,
                 "type": "object",
             }
         },
@@ -589,6 +603,7 @@ def test_response_translation_no_body_with_header():
             },
             "headers": {
                 "type": "object",
+                "additionalProperties": True,
                 "properties": {
                     "header_key": {
                         "type": "string"
@@ -636,8 +651,9 @@ def test_response_translation_text_plain_without_schema():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    'content-type': {
+                "additionalProperties": True,
+                "patternProperties": {
+                    '[cC]ontent-[tT]ype': {
                         'enum': ['text/plain'],
                         'type': 'string'
                     }
@@ -697,8 +713,9 @@ def test_response_translation_propertyPattern():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    "content-type": {
+                "additionalProperties": True,
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [
                             "application/json"
@@ -789,8 +806,9 @@ def test_response_translation_propertyPattern_with_ref():
             },
             "headers": {
                 "type": "object",
-                "properties": {
-                    "content-type": {
+                "additionalProperties": True,
+                "patternProperties": {
+                    "[cC]ontent-[tT]ype": {
                         "type": "string",
                         "enum": [
                             "application/json"

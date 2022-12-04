@@ -11,6 +11,7 @@
         },
         "headers": {
             "type": "object",
+            "additionalProperties": true,
             "properties": {
                 "header_key": {
                     "type": "string"

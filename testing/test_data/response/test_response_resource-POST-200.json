@@ -54,8 +54,9 @@
     "definitions": {
         "headers": {
             "type": "object",
-            "properties": {
-                "Content-Type": {
+            "additionalProperties": true,
+            "patternProperties": {
+                "[cC]ontent-[tT]ype": {
                     "type": "string",
                     "enum": [
                         "application/json",

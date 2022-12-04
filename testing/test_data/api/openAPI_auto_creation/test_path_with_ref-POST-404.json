@@ -10,6 +10,7 @@
             "type": "number"
         },
         "headers": {
+            "additionalProperties": true,
             "type": "object"
         }
     },
