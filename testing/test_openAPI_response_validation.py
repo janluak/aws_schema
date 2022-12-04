@@ -655,7 +655,7 @@ def test_response_translation_propertyPattern():
             "application/json": {
                 "schema": {
                     "type": "object",
-                    "patternProperties": {"^\d+$": {"type": "string"}},
+                    "patternProperties": {"^\\d+$": {"type": "string"}},
                 }
             }
         },
@@ -671,7 +671,7 @@ def test_response_translation_propertyPattern():
             "statusCode": {"type": "number"},
             "body": {
                 "type": "object",
-                "patternProperties": {"^\d+$": {"type": "string"}},
+                "patternProperties": {"^\\d+$": {"type": "string"}},
                 "additionalProperties": False,
             },
             "headers": {
@@ -713,7 +713,7 @@ def test_response_translation_propertyPattern_with_ref():
                 "schema": {
                     "type": "object",
                     "patternProperties": {
-                        "^\d+$": {"$ref": "#/components/schemas/example_ref"}
+                        "^\\d+$": {"$ref": "#/components/schemas/example_ref"}
                     },
                 }
             }
@@ -749,7 +749,7 @@ def test_response_translation_propertyPattern_with_ref():
             "body": {
                 "type": "object",
                 "patternProperties": {
-                    "^\d+$": {
+                    "^\\d+$": {
                         "type": "object",
                         "properties": {
                             "example_key1": {
