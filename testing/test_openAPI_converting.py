@@ -1,4 +1,3 @@
-from .test_openAPI_selection import open_api_schema
 from pathlib import Path
 from os.path import dirname, realpath
 

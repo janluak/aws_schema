@@ -11,6 +11,9 @@ from aws_schema import __version__
 with open("README.md", "r") as f:
     long_description = f.read()
 
+with open("requirements.txt", "r") as f:
+    requirements = f.readlines()
+
 setup(
     name="aws_schema",
     version=__version__,
@@ -31,6 +34,5 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     # https://pypi.org/pypi?%3Aaction=list_classifiers
-    install_requires=["boto3", "jsonschema"],
-    extra_require={"testing": ["pytest", "fil-io"]},
+    install_requires=requirements,
 )
