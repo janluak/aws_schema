@@ -66,6 +66,26 @@ def _schema_to_property(
                     api_schema["items"]["properties"][prop], full_schema
                 )
 
+    if api_schema.get("nullable") is True:
+        api_schema.pop("nullable")
+
+        keys_to_keep_at_level = ["oneOf", "description"]
+
+        if "oneOf" not in api_schema:
+
+            api_schema["oneOf"]  = [
+                {"type": "null"}, {k: v for k, v in api_schema.items() if k not in keys_to_keep_at_level}
+            ]
+        else:
+            oneOf = api_schema.pop("oneOf")
+            api_schema["oneOf"] = [
+                {"type": "null"}
+            ] + oneOf
+        for key in api_schema.copy():
+            if key not in keys_to_keep_at_level:
+                api_schema.pop(key)
+
+
     json_schema.update(api_schema)
 
     return json_schema

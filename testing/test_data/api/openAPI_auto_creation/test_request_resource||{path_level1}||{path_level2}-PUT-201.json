@@ -26,9 +26,16 @@
                 },
                 "body": {
                     "description": "string description",
-                    "type": "string",
-                    "enum": [
-                        "single_allowed_answer"
+                    "oneOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                "single_allowed_answer"
+                            ]
+                        }
                     ]
                 }
             },

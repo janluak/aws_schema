@@ -221,6 +221,7 @@ paths:
             text/plain:
               schema:
                 description: string description
+                nullable: true
                 type: string
                 enum:
                   - single_allowed_answer
